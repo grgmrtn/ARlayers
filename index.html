@@ -11,8 +11,18 @@
         THREEx.ArToolkitContext.baseURL = 'https://raw.githack.com/jeromeetienne/ar.js/master/three.js/'
     </script>
     <script type="text/javascript">
-        const distanceMsg = document.querySelector('[gps-entity-place]').getAttribute('distanceMsg');
-        console.log(distanceMsg);   // "890 meters"
+        
+        
+
+        $(function(){
+            setInterval(oneSecondFunction, 1000);
+        });
+
+        function oneSecondFunction() {
+            const distanceMsg = document.querySelector('[gps-entity-place]').getAttribute('distanceMsg');
+            console.log(distanceMsg);   // "890 meters"
+            document.getElementById("dist").html(distanceMsg);
+        }
     </script>
 </head>
 
@@ -25,5 +35,6 @@
         <a-camera gps-camera rotation-reader></a-camera>
         <!--<a-entity gltf-model="./assets/magnemite/scene.gltf" rotation="0 180 0" scale="1.0 1.0 1.0" gps-entity-place="longitude: -79.428400; latitude: 43.643151;" animation-mixer></a-entity>-->
         <a-box rotation="0 0 0" scale="1.0 1.0 1.0" gps-entity-place="longitude: -79.428595; latitude: 43.643123;" position="0 -5 0" color="red"></a-box>
+        <p id="dist"></p>
 	</a-scene>
 </body>
