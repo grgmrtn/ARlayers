@@ -12,16 +12,14 @@
     </script>
     <script type="text/javascript">
         
-        
-
-        $(function(){
-            setInterval(oneSecondFunction, 1000);
-        });
+        setInterval(oneSecondFunction, 1000);
+       
 
         function oneSecondFunction() {
             const distanceMsg = document.querySelector('[gps-entity-place]').getAttribute('distanceMsg');
             console.log(distanceMsg);   // "890 meters"
-            document.getElementById("dist").html(distanceMsg);
+            var p = document.getElementById("dist");
+            p.innerHTML = distanceMsg;
         }
     </script>
 </head>
