@@ -14,13 +14,14 @@
         
         setInterval(oneSecondFunction, 1000);
        
-
+        var i = 0;
         function oneSecondFunction() {
+            i++;
             const distanceMsg = document.querySelector('[gps-entity-place]').getAttribute('distanceMsg');
             console.log(distanceMsg);   // "890 meters"
             var p = document.getElementById("dist");
             if (distanceMsg) {
-                p.innerHTML = distanceMsg;
+                p.innerHTML = distanceMsg + " away [" + i + "]";
             }
         }
     </script>
