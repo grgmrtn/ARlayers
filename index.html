@@ -19,7 +19,9 @@
             const distanceMsg = document.querySelector('[gps-entity-place]').getAttribute('distanceMsg');
             console.log(distanceMsg);   // "890 meters"
             var p = document.getElementById("dist");
-            p.innerHTML = distanceMsg;
+            if (distanceMsg) {
+                p.innerHTML = distanceMsg;
+            }
         }
     </script>
     <style>
