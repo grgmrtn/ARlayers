@@ -45,11 +45,12 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>GeoAR.js demo</title>
     <script src='https://aframe.io/releases/1.2.0/aframe.min.js'></script>
-    <!--<script src="https://raw.githack.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.min.js"></script>-->
+    <!--<script src="https://raw.githack.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.min.js"></script>
     <script src="assets/aframe-ar.min.js"></script>
-    <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
+    <script src="https://raw.githack.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>-->
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
     <script>
-        THREEx.ArToolkitContext.baseURL = 'https://raw.githack.com/jeromeetienne/ar.js/master/three.js/'
+        //THREEx.ArToolkitContext.baseURL = 'https://raw.githack.com/jeromeetienne/ar.js/master/three.js/'
     </script>
     
     <style>
@@ -78,18 +79,30 @@
 		embedded gps-camera-debug 
         arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false; cameraParametersUrl:assets/camera_para.dat;'>
         
-        <a-camera gps-camera="alert: true" rotation-reader></a-camera>
+        <a-camera gps-camera="alert: true;" rotation-reader></a-camera>
         <!--<a-entity gltf-model="./assets/magnemite/scene.gltf" rotation="0 180 0" scale="1.0 1.0 1.0" gps-entity-place="longitude: -79.428400; latitude: 43.643151;" animation-mixer></a-entity>-->
-        <a-box rotation="0 0 0" scale="1.0 1.0 1.0" gps-entity-place="longitude: -79.428322; latitude: 43.643206;" position="0 0 0" color="red"></a-box>
-        <a-box rotation="0 0 0" scale="1.0 1.0 1.0" gps-entity-place="longitude: -79.428322; latitude: 43.643208;" position="0 0 0" color="orange"></a-box>
-        <a-box rotation="0 0 0" scale="1.0 1.0 1.0" gps-entity-place="longitude: -79.428322; latitude: 43.643210;" position="0 0 0" color="yellow"></a-box>
-        <a-box rotation="0 0 0" scale="1.0 1.0 1.0" gps-entity-place="longitude: -79.428322; latitude: 43.643212;" position="0 0 0" color="green"></a-box>
-        <a-box rotation="0 0 0" scale="1.0 1.0 1.0" gps-entity-place="longitude: -79.428322; latitude: 43.643214;" position="0 0 0" color="blue"></a-box>
+        <a-box rotation="0 0 0" scale="1.0 1.0 1.0" gps-entity-place="longitude: -79.428322; latitude: 43.643206;"  color="red"></a-box>
+        <a-box rotation="0 0 0" scale="1.0 1.0 1.0" gps-entity-place="longitude: -79.428322; latitude: 43.643208;" color="orange"></a-box>
+        <a-box rotation="0 0 0" scale="1.0 1.0 1.0" gps-entity-place="longitude: -79.428322; latitude: 43.643210;"  color="yellow"></a-box>
+        <a-box rotation="0 0 0" scale="1.0 1.0 1.0" gps-entity-place="longitude: -79.428322; latitude: 43.643212;"  color="green"></a-box>
+        <a-box rotation="0 0 0" scale="1.0 1.0 1.0" gps-entity-place="longitude: -79.428322; latitude: 43.643214;"  color="blue"></a-box>
 	</a-scene>
 </body>
 <footer>
     <script type="text/javascript">
         
+        var scene = document.querySelector('a-scene');
+
+        if (scene.hasLoaded) {
+          run();
+        } else {
+          scene.addEventListener('loaded', run);
+        }
+
+        function run () {
+          
+        }
+
         setInterval(oneSecondFunction, 1000);
        
         var i = 0;
