@@ -51,6 +51,36 @@
     <script>
         THREEx.ArToolkitContext.baseURL = 'https://raw.githack.com/jeromeetienne/ar.js/master/three.js/'
     </script>
+    
+    <style>
+        #dist {
+
+            z-index: 1000;
+            position: fixed;
+            top: 0;
+            left: 20px;
+        }
+        
+    </style>
+</head>
+
+<body style='margin: 0; overflow: hidden;'>
+    <p id="dist">Test Nov 2</p>
+    <a-scene
+        vr-mode-ui="enabled: false"
+		embedded arjs="" 
+        arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false; cameraParametersUrl:assets/camera_para.dat;'>
+        
+        <a-camera gps-camera rotation-reader></a-camera>
+        <!--<a-entity gltf-model="./assets/magnemite/scene.gltf" rotation="0 180 0" scale="1.0 1.0 1.0" gps-entity-place="longitude: -79.428400; latitude: 43.643151;" animation-mixer></a-entity>-->
+        <a-box rotation="0 0 0" scale="1.0 1.0 1.0" gps-entity-place="longitude: -79.428350; latitude: 43.643140;" position="0 0 0" color="red"></a-box>
+        <a-box rotation="0 0 0" scale="1.0 1.0 1.0" gps-entity-place="longitude: -79.428355; latitude: 43.643145;" position="0 0 0" color="orange"></a-box>
+        <a-box rotation="0 0 0" scale="1.0 1.0 1.0" gps-entity-place="longitude: -79.428360; latitude: 43.643150;" position="0 0 0" color="yellow"></a-box>
+        <a-box rotation="0 0 0" scale="1.0 1.0 1.0" gps-entity-place="longitude: -79.428365; latitude: 43.643155;" position="0 0 0" color="green"></a-box>
+        <a-box rotation="0 0 0" scale="1.0 1.0 1.0" gps-entity-place="longitude: -79.428370; latitude: 43.643160;" position="0 0 0" color="blue"></a-box>
+	</a-scene>
+</body>
+<footer>
     <script type="text/javascript">
         
         setInterval(oneSecondFunction, 1000);
@@ -81,31 +111,5 @@
         };
 
     </script>
-    <style>
-        #dist {
+</footer>
 
-            z-index: 1000;
-            position: fixed;
-            top: 0;
-            left: 20px;
-        }
-        
-    </style>
-</head>
-
-<body style='margin: 0; overflow: hidden;'>
-    <p id="dist">Test Nov 2</p>
-    <a-scene
-        vr-mode-ui="enabled: false"
-		embedded arjs="" 
-        arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false; cameraParametersUrl:assets/camera_para.dat;'>
-        
-        <a-camera gps-camera rotation-reader></a-camera>
-        <!--<a-entity gltf-model="./assets/magnemite/scene.gltf" rotation="0 180 0" scale="1.0 1.0 1.0" gps-entity-place="longitude: -79.428400; latitude: 43.643151;" animation-mixer></a-entity>-->
-        <a-box rotation="0 0 0" scale="1.0 1.0 1.0" gps-entity-place="longitude: -79.428350; latitude: 43.643140;" position="0 0 0" color="red"></a-box>
-        <a-box rotation="0 0 0" scale="1.0 1.0 1.0" gps-entity-place="longitude: -79.428355; latitude: 43.643145;" position="0 0 0" color="orange"></a-box>
-        <a-box rotation="0 0 0" scale="1.0 1.0 1.0" gps-entity-place="longitude: -79.428360; latitude: 43.643150;" position="0 0 0" color="yellow"></a-box>
-        <a-box rotation="0 0 0" scale="1.0 1.0 1.0" gps-entity-place="longitude: -79.428365; latitude: 43.643155;" position="0 0 0" color="green"></a-box>
-        <a-box rotation="0 0 0" scale="1.0 1.0 1.0" gps-entity-place="longitude: -79.428370; latitude: 43.643160;" position="0 0 0" color="blue"></a-box>
-	</a-scene>
-</body>
