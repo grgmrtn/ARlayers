@@ -62,10 +62,18 @@
             left: 20px;
         }
 
+        #extra {
+
+            z-index: 1000;
+            position: fixed;
+            top: 50px;
+            left: 20px;
+        }
+
         .debug {
             z-index: 1000;
             position:  fixed;
-            top:  50px;
+            top:  100px;
             left:  20px;
         }
         
@@ -74,6 +82,7 @@
 
 <body style='margin: 0; overflow: hidden;'>
     <p id="dist">Test Nov 3</p>
+    <p id="extra">Device Orientation data here</p>
     <a-scene
         vr-mode-ui="enabled: false"
 		embedded gps-camera-debug 
@@ -118,8 +127,8 @@
 
           var resultStr = "abs: " + absolute + " alp: " + alpha + " bet: " + beta + " gam: " + gamma;
           console.log(resultStr);
-            var p = document.getElementById("dist");
-          p.innerHTML = resultStr;
+            var q = document.getElementById("extra");
+          q.innerHTML = resultStr;
           // Do stuff with the new orientation data
         }
 
