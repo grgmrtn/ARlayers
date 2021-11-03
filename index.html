@@ -108,6 +108,21 @@
           
         }
 
+
+        window.addEventListener("deviceorientation", handleOrientation, true);
+        function handleOrientation(event) {
+          var absolute = event.absolute;
+          var alpha    = event.alpha;
+          var beta     = event.beta;
+          var gamma    = event.gamma;
+
+          var resultStr = "abs: " + absolute + " alp: " + alpha + " bet: " + beta + " gam: " + gamma;
+          console.log(resultStr);
+            var p = document.getElementById("dist");
+          p.innerHTML = resultStr;
+          // Do stuff with the new orientation data
+        }
+
         setInterval(oneSecondFunction, 1000);
        
         var i = 0;
