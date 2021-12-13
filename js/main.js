@@ -3,8 +3,10 @@
 
         if (scene.hasLoaded) {
           run();
+          
         } else {
           scene.addEventListener('loaded', run);
+          
         }
 
         function run () {
@@ -12,6 +14,19 @@
         }
 
 
+        
+        setInterval(function(){
+
+        console.log($("a-box").attr("gps-entity-place"));
+    },1000)
+
+        setTimeout(function(){
+            const distanceMsg = document.querySelector('[gps-entity-place]').getAttribute('distanceMsg');
+            console.log(distanceMsg);   // "890 meters"
+    
+
+        },10000)
+        
 
         window.addEventListener("deviceorientation", handleOrientation, true);
         function handleOrientation(event) {
