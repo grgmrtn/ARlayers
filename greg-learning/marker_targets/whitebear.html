@@ -2,11 +2,10 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
+        <script src="https://rawgit.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.min.js"></script>
+        <script src="https://rawgit.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
     </head>
-    <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
-    <script src="https://rawgit.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.min.js"></script>
-    <script src="https://rawgit.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
-    
     <body style='margin : 0px; overflow: hidden;'>
         <!-- we add detectionMode and matrixCodeType to tell AR.js to recognize barcode markers -->
         <a-scene embedded arjs='sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;'>
@@ -17,7 +16,7 @@
 
         <a-marker-camera type='pattern' preset='custom' url='WhiteBearMarker.patt'>
             <a-box src='whitebear_texture.png' position='0 0.5 0' rotation='20 20 20'></a-box>
-            <a-box position='0 0.5 1' src='whitebear_texture.png' animation='property: object3d.position.z; to: 2.2; dir: alternate; dur: 2000; loop: true'></a-box>
+            <a-box src='whitebear_texture.png' position='0 0.5 1' ></a-box>
             <a-box position='0 0.5 2' color="green"></a-box>
         </a-marker-camera>
 
