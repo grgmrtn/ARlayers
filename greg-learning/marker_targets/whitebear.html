@@ -15,21 +15,21 @@
             <a-asset-item id="animated-asset" src="https://raw.githubusercontent.com/nicolocarpignoli/nicolocarpignoli.github.io/master/ar-playground/models/CesiumMan.gltf"></a-asset-item>
         </a-assets>
 
-        <a-marker type='pattern' preset='custom' url='WhiteBearMarker.patt'>
+        <a-marker-camera type='pattern' preset='custom' url='WhiteBearMarker.patt'>
             <a-box src='whitebear_texture.png' position='0 0.5 0' rotation='20 20 20'></a-box>
             <a-box position='0 0.5 1' src='whitebear_texture.png' animation='property: object3d.position.z; to: 2.2; dir: alternate; dur: 2000; loop: true'></a-box>
             <a-box position='0 0.5 2' color="green"></a-box>
-        </a-marker>
+        </a-marker-camera>
 
-        <a-marker id="animated-marker" type='barcode' value='6'>
+        <!--<a-marker id="animated-marker" type='barcode' value='6'>
             <a-entity
                 gltf-model="#animated-asset"
                 scale="2">
             </a-entity>
         </a-marker>
 
-        <!-- use this <a-entity camera> to support multiple-markers, otherwise use <a-marker-camera> instead of </a-marker> -->
-        <a-entity camera></a-entity>
+        <!-- use this <a-entity camera> to support multiple-markers, otherwise use <a-marker-camera> instead of </a-marker>
+        <a-entity camera></a-entity>-->
         </a-scene>
     </body>
 </html>
