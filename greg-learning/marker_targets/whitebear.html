@@ -18,8 +18,14 @@
             <a-box src='whitebear_texture.png' position='0 0.5 0' rotation='20 20 20'></a-box>
             <a-box src='whitebear_texture.png' position='0 0.5 1' ></a-box>
             <a-box position='0 0.5 2' color="green"></a-box>
-            <a-plane color='#c7d3bf' height='100' width='100'></a-plane>
+            <a-plane color='#c7d3bf' height='100' width='100' position='5 5 0'></a-plane>
             <a-ring color="teal" radius-inner="3" radius-outer="4" position='2 2 2'></a-ring>
+            <a-box opacity="0.1" color="blue" width="1" height="1" depth="0.001"
+             position="0 1.5 -1.5"
+             text="align: center; color: black; value: (Centered) default\n(roboto) font\nwith line break">
+            <a-text color="red" align="center" baseline="top" width="1" position="0 0.5 0"
+                font="aileronsemibold"
+                value="Top of box\n(even when multi-line)\naileronsemibold font" ></a-text>
         </a-marker-camera>
 
         <!--<a-marker id="animated-marker" type='barcode' value='6'>
