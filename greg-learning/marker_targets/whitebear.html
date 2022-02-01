@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-        <title class='sitontop'>25</title>
+        <title class='sitontop'>26</title>
         <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
         <script src="https://rawgit.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.min.js"></script>
         <script src="https://rawgit.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
@@ -87,12 +87,12 @@
         <a-marker-camera type='pattern' preset='custom' url='WhiteBearMarker.patt' id='target' listener>
             <a-box src='#whitebear_texture' position='0 0.5 0' opacity='0.8' rotation='20 0 20' animation='property: rotation; to: 20 360 20; loop: true; dur: 3000' id='spinbox' change-color-on-hover='color:blue'></a-box>
             
-            <a-box position='-10 2 0' color='blue' opacity='0.6' width='6' height='10' depth='3' animation='property: position; to: -10 -10 0; loop: true; dur: 3000' animation='property: material.color; from:blue; to: red; loop: true; dur: 3000'></a-box>
+            <a-box position='-10 2 0' color='blue' opacity='0.6' width='6' height='10' depth='3' animation='property: position; to: -10 -10 0; loop: true; dur: 3000' animation__2='property: material.color; from: blue; to: red; loop: true; dur: 3000'></a-box><!--two anims, double underscores-->
 
-            <a-box position='-15 2 0' opacity='0.6' width='6' height='10' depth='3' animation='property: color; from:blue; to: red; loop: true; dur: 3000'></a-box><!--only one animation, no original color-->
+            <a-box position='-15 2 0' opacity='0.6' width='6' height='10' depth='3' animation='property: components.material.material.color; type:color; from: blue; to: red; loop: true; dur: 3000'></a-box><!--only one animation, full dot path, type:color-->
 
-            <a-box position='-20 2 0' color='blue' opacity='0.6' width='6' height='10' depth='3' animation='property: position; to: -20 -10 0; loop: true; dur: 3000' animation='property: material.color; from:blue; to: red; loop: true; dur: 3000'>
-                <a-animation attribute='color' from='blue' to='red' loop='true' dur='3000'></a-animation>
+            <a-box position='-20 2 0' color='blue' opacity='0.6' width='6' height='10' depth='3'>
+                <a-animation attribute='color' type='color' from='blue' to='red' loop='true' dur='3000'></a-animation>
                 <a-animation attribute='position' to='-10 -10 0' loop='true' dur='3000'></a-animation>
             </a-box><!--nested animation tags, no original color-->
 
