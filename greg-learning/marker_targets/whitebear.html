@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-        <title>31</title>
+        <title>32</title>
         <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
         <script src="https://rawgit.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.min.js"></script>
         <script src="https://rawgit.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
@@ -91,7 +91,7 @@
                 width='6' 
                 height='10' 
                 depth='3' 
-                animation='property: position; to: -10 -10 0; loop: true; dur: 8000; easeInOut: easeInOutQuad;' 
+                animation='property: position; to: -10 -10 3; loop: true; dur: 8000; easeInOut: easeInOutQuad;' 
                 animation__color='property: components.material.material.color; type:color; from: blue; to: green; loop: true; dur: 3000' 
                 animation__fade='property: components.material.material.opacity; from: 0.6; to: 0; loop: true; dur: 3000; easeIn: easeInExpo'>     
             </a-box><!--position, color and fade at end-->
@@ -103,24 +103,24 @@
                 width='6' 
                 height='10' 
                 depth='3'
-                animation='property: position; to: -17 -10 0; loop: true; dur: 20000; easeInOut: easeInOutQuad;' >      
+                animation='property: position; to: -17 -10 3; loop: true; dur: 5000; easeInOut: easeInOutQuad;' >      
             </a-box>
 
             <a-box id='car_close_EtoW'
                 color='white' 
                 position='-90 -5 3' 
                 opacity='0.6' 
-                width='6' 
-                height='10' 
+                width='10' 
+                height='6' 
                 depth='3'
-                animation='property: position; to: 10 -5 3; loop: true; dur: 10000; easeInOut: easeInOutQuad;' >      
+                animation='property: position; to: 10 -5 3; loop: true; dur: 20000; easeInOut: easeInOutQuad;' >      
             </a-box>
            
 
             <a-text color="white" align="left" rotation='-90 0 0' baseline="top" width="20" position="-3 0.5 1.5"
                 font="aileronsemibold"
                 value="Autonomous vehicles\nrequire new approaches\nto urban safety." ></a-text>
-            <a-text color="yellow" align="left" rotation='-90 0 0' baseline="top" width="20" position="-3 0.5 4"
+            <a-text color="yellow" align="left" rotation='-90 0 0' baseline="top" width="20" position="-3 0.5 4.5"
                 font="aileronsemibold"
                 value="Can we foresee some\nof those approaches?" ></a-text>
 
