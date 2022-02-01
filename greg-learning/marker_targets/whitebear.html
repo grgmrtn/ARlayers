@@ -68,7 +68,7 @@
                  this.prevRotation = null;
                }
               }
-            })
+            });
 
           function testClick() {
             console.log("Wow!");
@@ -83,8 +83,8 @@
             <img id='whitebear_texture' src='whitebear_texture.png'>
         </a-assets>
 
-        <a-marker-camera type='pattern' preset='custom' url='WhiteBearMarker.patt' listener>
-            <a-box src='#whitebear_texture' position='0 0.5 0' opacity='0.7' rotation='20 20 20' animation='property: rotation; to: 20 360 20; loop: true; dur: 3000' id='spinbox' change-color-on-hover='color:blue' onclick='testClick()'></a-box>
+        <a-marker-camera type='pattern' preset='custom' url='WhiteBearMarker.patt' id='target' listener>
+            <a-box src='#whitebear_texture' position='0 0.5 0' opacity='0.7' rotation='20 0 20' animation='property: rotation; to: 20 360 20; loop: true; dur: 3000' id='spinbox' change-color-on-hover='color:blue'></a-box>
             
             <!--<a-box position='0 0.5 2' color="green"></a-box>
             <a-ring color="teal" radius-inner="3" radius-outer="4" position='2 2 2'></a-ring>
