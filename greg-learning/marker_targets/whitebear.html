@@ -44,10 +44,10 @@
         <a-scene embedded arjs='sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;' cursor="rayOrigin: mouse">
 
         <a-assets>
-            <img id='whitebear_texture' src='whitebear_texture.png' smooth='true'>
+            <img id='whitebear_texture' src='whitebear_texture.png'>
         </a-assets>
 
-        <a-marker-camera type='pattern' preset='custom' url='WhiteBearMarker.patt'>
+        <a-marker-camera type='pattern' preset='custom' url='WhiteBearMarker.patt' smooth='true'>
             <a-box src='#whitebear_texture' position='0 0.5 0' opacity='0.7' rotation='20 20 20' animation='property: rotation; to: 20 360 20; loop: true; dur: 3000' id='spinbox' change-color-on-hover='color:blue' onclick='testClick()'></a-box>
             
             <!--<a-box position='0 0.5 2' color="green"></a-box>
