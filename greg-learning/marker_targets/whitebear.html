@@ -2,20 +2,15 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-        <title class='sitontop'>30</title>
+        <title>31</title>
         <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
         <script src="https://rawgit.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.min.js"></script>
         <script src="https://rawgit.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
         <style>
-            .sitontop {
-                z-index: 9000;
-                text-align: center;
-                position: fixed;
-                width: 100%;
-            }
+
         </style>
         <script type="text/javascript">
-          AFRAME.registerComponent('change-color-on-hover', {
+          /*AFRAME.registerComponent('change-color-on-hover', {
             schema: {
               color: {default: 'red'}
             },
@@ -69,11 +64,8 @@
                  this.prevRotation = null;
                }
               }
-            });
+            });*/
 
-          function testClick() {
-            console.log("Wow!");
-          }
         </script>
     </head>
     <body style='margin : 0px; overflow: hidden;'>
@@ -85,12 +77,46 @@
         </a-assets>
 
         <a-marker-camera type='pattern' preset='custom' url='WhiteBearMarker.patt' id='target' listener>
-            <a-box src='#whitebear_texture' position='0 0.5 0' opacity='0.8' rotation='20 0 20' animation='property: rotation; to: 20 360 20; loop: true; dur: 3000' id='spinbox'></a-box>
+            <a-box id='home_cube' 
+                src='#whitebear_texture' 
+                position='0 0.5 0' 
+                opacity='0.8' 
+                rotation='20 0 20' 
+                animation='property: rotation; to: 20 360 20; loop: true; dur: 3000'>      
+            </a-box>
             
-            <a-box position='-10 2 0' color='blue' opacity='0.6' width='6' height='10' depth='3' animation='property: position; to: -10 -10 0; loop: true; dur: 3000; easeInOut: easeInOutQuad;' animation__color='property: components.material.material.color; type:color; from: blue; to: green; loop: true; dur: 3000' animation__fade='property: components.material.material.opacity; from: 0.6; to: 0; loop: true; dur: 3000; easeIn: easeInExpo'></a-box><!--position, color and fade at end-->
+            <a-box id='car_close_NtoS' 
+                position='-10 2 3' 
+                opacity='0.6' 
+                width='6' 
+                height='10' 
+                depth='3' 
+                animation='property: position; to: -10 -10 0; loop: true; dur: 8000; easeInOut: easeInOutQuad;' 
+                animation__color='property: components.material.material.color; type:color; from: blue; to: green; loop: true; dur: 3000' 
+                animation__fade='property: components.material.material.opacity; from: 0.6; to: 0; loop: true; dur: 3000; easeIn: easeInExpo'>     
+            </a-box><!--position, color and fade at end-->
 
-            <a-box position='-17 2 0' opacity='0.6' width='6' height='10' depth='3' animation='property: components.material.material.color; type:color; from: blue; to: red; loop: true; dur: 3000; '></a-box><!--only one animation with easing-->
+            <a-box id='car_far_NtoS'
+                color='red' 
+                position='-17 22 3' 
+                opacity='0.6' 
+                width='6' 
+                height='10' 
+                depth='3'
+                animation='property: position; to: -17 -10 0; loop: true; dur: 20000; easeInOut: easeInOutQuad;' >      
+            </a-box>
+
+            <a-box id='car_close_EtoW'
+                color='white' 
+                position='-90 -5 3' 
+                opacity='0.6' 
+                width='6' 
+                height='10' 
+                depth='3'
+                animation='property: position; to: 10 -5 3; loop: true; dur: 10000; easeInOut: easeInOutQuad;' >      
+            </a-box>
            
+
             <a-text color="white" align="left" rotation='-90 0 0' baseline="top" width="20" position="-3 0.5 1.5"
                 font="aileronsemibold"
                 value="Autonomous vehicles\nrequire new approaches\nto urban safety." ></a-text>
@@ -102,9 +128,23 @@
             ANIMATE COLOR: <a-box position='-15 2 0' opacity='0.6' width='6' height='10' depth='3' animation='property: components.material.material.color; type:color; from: blue; to: red; loop: true; dur: 3000'></a-box>
             ROTATION IN PLACE:  <a-box src='#whitebear_texture' position='0 0.5 0' opacity='0.8' rotation='20 0 20' animation='property: rotation; to: 20 360 20; loop: true; dur: 3000' id='spinbox'></a-box>
             POSITION AND COLOR: <a-box position='-10 2 0' color='blue' opacity='0.6' width='6' height='10' depth='3' animation='property: position; to: -10 -10 0; loop: true; dur: 3000' animation__2='property: components.material.material.color; type:color; from: blue; to: green; loop: true; dur: 3000'></a-box>
+            lower boxes
+            more of them
+            20s loop or so
+            animate crosswalk
+                        -y
+                    -z /
+                    | /
+                    |/
+            -x <--------- > +x
+                   /|
+                  / |
+                 /  +z
+                +y
+
             -->
 
-            <a-cursor></a-cursor>
+            <a-entity id="mouseCursor" cursor="rayOrigin: mouse"></a-entity>
         </a-marker-camera>
 
         </a-scene>
