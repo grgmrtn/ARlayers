@@ -85,6 +85,7 @@
                 animation='property: rotation; to: 20 360 20; loop: true; dur: 3000'>      
             </a-box>
             
+            <!--CARS-->
             <a-box id='car_close_NtoS' 
                 color='blue'
                 position='-10 2 3' 
@@ -116,7 +117,38 @@
                 animation='property: position; to: 10 -5 3; loop: true; dur: 20000; easeIn: easeInQuad;' >      
             </a-box>
            
+            <!--ROAD-->
+            <a-cylinder id='curb_NW'
+                color='grey' 
+                position='0 0 6' 
+                radius='10' 
+                height='1'
+            >      
+            </a-cylinder>
+            <a-cylinder id='curb_NE'
+                color='grey' 
+                position='-20 0 6' 
+                radius='10' 
+                height='1'
+            >      
+            </a-cylinder>
+            <a-cylinder id='curb_SW'
+                color='grey' 
+                position='0 -20 6' 
+                radius='10' 
+                height='1'
+            >      
+            </a-cylinder>
+            <a-cylinder id='curb_SE'
+                color='grey' 
+                position='-20 -20 6' 
+                radius='10' 
+                height='1'
+            >      
+            </a-cylinder>
 
+
+            <!--TEXT-->
             <a-text color="white" align="left" rotation='-90 0 0' baseline="top" width="10" position="-3 0.5 1.5"
                 font="aileronsemibold"
                 value="Autonomous vehicles\nrequire new approaches\nto urban safety." ></a-text>
@@ -134,7 +166,7 @@
                         -y
                     -z /
                     | /
-                    |/
+                    |MKR
             -x <--------- > +x
                    /|
                   / |
