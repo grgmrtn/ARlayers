@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-        <title>C12</title>
+        <title>C13</title>
         <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
         <script src="https://rawgit.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.min.js"></script>
         <script src="https://rawgit.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
@@ -73,9 +73,11 @@
         <a-scene embedded arjs='sourceType: webcam; debugUIEnabled: false; detectionMode: mono_and_matrix; matrixCodeType: 3x3;' cursor="rayOrigin: mouse">
 
         <a-assets>
-            <img id='whitebear_texture' src='whitebear_texture.png'>
-            <a-asset-item id='bikeModel' src='mountain-bike.obj'></a-asset-item>
-            <a-asset-item id='bikeMtl' src='mountain-bike.mtl'></a-asset-item>
+            <img id='whitebear_texture' src='assets/whitebear_texture.png'>
+            <a-asset-item id='bikeModel' src='assets/mountain-bike.obj'></a-asset-item>
+            <a-asset-item id='bikeMtl' src='assets/mountain-bike.mtl'></a-asset-item>
+            <a-asset-item id='carModel' src='assets/vw-beetle.obj'></a-asset-item>
+            <a-asset-item id='carMtl' src='assets/vw-beetle.mtl'></a-asset-item>
         </a-assets>
 
         <a-marker-camera type='pattern' preset='custom' url='markerA.patt' id='target' listener>
@@ -94,7 +96,8 @@
                 height='2' 
                 animation='property: width; from: 6; to: 7; loop: true; dur: 1500; dir: alternate;'
                 animation__2='property: depth; from: 4; to: 5; loop: true; dur: 1500; dir: alternate;' 
-                animation__3='property: components.material.material.color; type:color; from: #ff8c61; to: #985277; loop: true; dur: 4000; dir: alternate;'>
+                animation__3='property: components.material.material.color; type:color; from: #ff8c61; to: #985277; loop: true; dur: 4000; dir: alternate;'
+                animation__4='property: position; from: -20 -2 3; to: 10 2 3; loop: true; dur: 4000; dir: alternate;'>
                 
                 <a-entity 
                     obj-model='obj: #bikeModel; mtl: #bikeMtl' 
@@ -113,7 +116,7 @@
                 animation__2='property: depth; from: 4; to: 5; loop: true; dur: 1500; dir: alternate;' 
                 animation__3='property: components.material.material.color; type:color; from: #ff8c61; to: #985277; loop: true; dur: 4000; dir: alternate;'>
                 <a-entity 
-                    obj-model='obj: #bikeModel; mtl: #bikeMtl' 
+                    obj-model='obj: #carModel; mtl: #carMtl' 
                     scale='0.5 0.5 0.5' 
                     rotation='-90 0 0' 
                     position='0 0 2' >  
