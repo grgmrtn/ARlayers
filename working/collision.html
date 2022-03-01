@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-        <title>C13</title>
+        <title>C14</title>
         <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
         <script src="https://rawgit.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.min.js"></script>
         <script src="https://rawgit.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
@@ -117,7 +117,7 @@
                 animation__3='property: components.material.material.color; type:color; from: #ff8c61; to: #985277; loop: true; dur: 4000; dir: alternate;'>
                 <a-entity 
                     obj-model='obj: #carModel; mtl: #carMtl' 
-                    scale='0.5 0.5 0.5' 
+                    scale='0.1 0.1 0.1' 
                     rotation='-90 0 0' 
                     position='0 0 2' >  
                 </a-entity>      
@@ -186,8 +186,26 @@
                 rotation='90 0 0' 
                 radius='10' 
                 height='1'
-            >      
+            >
+                <a-box id='curb_box_SWS' 
+                    color='grey'
+                    position='0 -10 0' 
+                    width='20' 
+                    depth='20'
+                    height='1' 
+                ></a-box> 
+                <a-box id='curb_box_SWW' 
+                color='grey'
+                position='10 0 0' 
+                width='20' 
+                depth='20'
+                height='1' 
+                >
+                </a-box>     
             </a-cylinder>
+            
+              
+            
 
             <a-cylinder id='curb_SE'
                 color='grey' 
