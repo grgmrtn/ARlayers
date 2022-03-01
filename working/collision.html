@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-        <title>C7</title>
+        <title>C8</title>
         <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
         <script src="https://rawgit.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.min.js"></script>
         <script src="https://rawgit.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
@@ -75,6 +75,7 @@
         <a-assets>
             <img id='whitebear_texture' src='whitebear_texture.png'>
             <a-asset-item id='bikeModel' src='mountain-bike.obj'></a-asset-item>
+            <a-asset-item id='bikeMtl' src='mountain-bike.mtl'></a-asset-item>
         </a-assets>
 
         <a-marker-camera type='pattern' preset='custom' url='markerA.patt' id='target' listener>
@@ -99,7 +100,7 @@
 
                 >     
             </a-box><!--position, color and fade at end-->
-            <a-entity obj-model='#bikeModel' scale='0.5 0.5 0.5' position='-10 -2 3' ></a-entity>
+            <a-entity obj-model='obj: #bikeModel; mtl: #bikeMtl' scale='0.5 0.5 0.5' position='-10 -2 3' ></a-entity>
 
            
             <!--ROAD-->
@@ -198,7 +199,7 @@
             <a-plane rotation='90 0 0'
                 height='40'
                 width='40'
-                position='0 0 7'
+                position='-20 -20 16'
                 opacity='0.3'
                 color='green'
             >
