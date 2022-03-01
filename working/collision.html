@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-        <title>C18</title>
+        <title>C19</title>
         <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
         <script src="https://rawgit.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.min.js"></script>
         <script src="https://rawgit.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
@@ -81,6 +81,21 @@
         </a-assets>
 
         <a-marker-camera type='pattern' preset='custom' url='markerA.patt' id='target' listener>
+            <a-box id='car' 
+                position='0 -40 5' 
+                opacity='0.6' 
+                width='7' 
+                animation='property: height; from: 12; to: 14; loop: true; dur: 1500; dir: alternate;'
+                animation__2='property: depth; from: 4; to: 5; loop: true; dur: 1500; dir: alternate;' 
+                animation__3='property: components.material.material.color; type:color; from: #ff8c61; to: #985277; loop: true; dur: 4000; dir: alternate;'>
+                <a-entity 
+                    obj-model='obj: #carModel; mtl: #carMtl' 
+                    scale='0.01 0.01 0.01' 
+                    rotation='-90 0 0' 
+                    position='0 0 0' >  
+                </a-entity>      
+            </a-box>
+
             <a-box id='home_cube' 
                 src='#whitebear_texture' 
                 position='0 0.5 0' 
@@ -108,20 +123,7 @@
             </a-box>
             
 
-            <a-box id='car' 
-                position='0 -40 5' 
-                opacity='0.6' 
-                width='7' 
-                animation='property: height; from: 12; to: 14; loop: true; dur: 1500; dir: alternate;'
-                animation__2='property: depth; from: 4; to: 5; loop: true; dur: 1500; dir: alternate;' 
-                animation__3='property: components.material.material.color; type:color; from: #ff8c61; to: #985277; loop: true; dur: 4000; dir: alternate;'>
-                <a-entity 
-                    obj-model='obj: #carModel; mtl: #carMtl' 
-                    scale='0.01 0.01 0.01' 
-                    rotation='-90 0 0' 
-                    position='0 0 0' >  
-                </a-entity>      
-            </a-box>
+            
            
             <!--ROAD-->
             <a-cylinder id='curb_NW'
