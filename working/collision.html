@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-        <title>C23</title>
+        <title>C24</title>
         <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
         <script src="https://rawgit.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.min.js"></script>
         <script src="https://rawgit.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
@@ -126,6 +126,16 @@
             
            
             <!--ROAD-->
+            <a-box id='road_plane' 
+                color='#ebecf0'
+                position='0 0 13' 
+                rotation='90 0 0'
+                width='40' 
+                depth='40'
+                height='1' 
+            >
+            </a-box> 
+
             <a-cylinder id='curb_NW'
                 color='grey' 
                 position='-10 -20 12'
@@ -229,15 +239,7 @@
             </a-cylinder>
             
 
-            <a-box id='road_plane' 
-                    color='#ebecf0'
-                    position='0 0 13' 
-                    rotation='90 0 0'
-                    width='40' 
-                    depth='40'
-                    height='1' 
-                >
-                </a-box> 
+            
 
             <!--<a-plane rotation='0 0 0'
                 height='10'
