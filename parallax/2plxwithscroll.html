@@ -1,0 +1,160 @@
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0">
+        <title>Parallax Test</title>
+        <style>
+        	body, html {
+        		/*necessary for some reason*/
+        		height: 100%;
+        		margin: 0;
+        	}
+
+        	svg {
+        		width: 75%;
+        	}
+
+        	.photo_container {
+        		/*contains the image - seems that each sticky item needs its own one of these*/
+        		background-image: url("parallax_bg.jpg");
+        		min-height: 100%;
+        		background-attachment: fixed;
+        		background-position: center;
+        		background-repeat: no-repeat;
+        		background-size: cover;
+        	}
+
+        	.sticky_container {
+        		/*stick after top edge hits top property below; pushed away by next sticky item*/
+        		border: 2px solid yellow;
+        		position: -webkit-sticky;
+        		position: sticky;
+        		height: 95%; /*does not include padding, must not cause element to start below top: property*/
+        		top: 1%;
+        	}
+
+        	.vcentre_content_container {
+        		font-size: 36px;
+        		color: white;
+        		font-weight: bold;
+        		text-align: center;
+        		font-family: sans-serif;
+        		border: 2px solid red;
+        		
+        		/*These properties keep the content vertically centred no matter the view size.*/
+        		top: 50%;
+        		position: relative;
+        		transform: translateY(-50%);
+        	}
+
+        	.spacer {
+        		min-height: 100%;
+        	}
+
+        	#scroll_tracker {
+        		position: fixed;
+        		top: 20;
+        		left: 20;
+        		z-index: 1000;
+        		background-color: purple;
+        		color: white;
+        		width: 200px;
+        		height: 50px;
+        	}
+
+        	.squaredance {
+
+        		animation: slideover 1s linear infinite;
+        		animation-play-state: paused;
+        		animation-delay: calc( ((var(--scroll) - 0)/(10 - 0)) * -1s );
+        		/*(var(--scroll) - box_top_scroll_pct)/(box_bottom_scroll_pct - box_top_scroll_pct)
+        		duration at end of calc must match animation length * -1*/
+        		animation-iteration-count: 1;
+				animation-fill-mode: both;
+        	}
+
+        	.circledance {
+
+        		animation: slideover 1s linear infinite;
+        		animation-play-state: paused;
+        		animation-delay: calc( ((var(--scroll) - 41)/(51 - 41)) * -1s );
+        		/*(var(--scroll) - box_top_scroll_pct)/(box_bottom_scroll_pct - box_top_scroll_pct)
+        		duration at end of calc must match animation length * -1*/
+        		animation-iteration-count: 1;
+				animation-fill-mode: both;
+        	}
+
+        	@keyframes rotate {
+			  to {
+			    transform: rotate(360deg);
+			  }
+			}
+
+			@keyframes slideover {
+			  to {
+			    transform: translateX(95%);
+			  }
+			}
+        	
+
+        </style>
+        <script type="text/javascript">
+        	//computes scroll distance down the page and provides it to CSS
+        	window.addEventListener('scroll', () => {
+        		var scrollAmt = 100 * window.pageYOffset / (document.body.scrollHeight - window.innerHeight);
+			  document.body.style.setProperty('--scroll', scrollAmt);
+			  document.getElementById("scroll_tracker").innerHTML = Math.round(scrollAmt) + "% down the page";
+
+			}, false);
+
+        	//keeps scroll right at top on refresh
+			window.onbeforeunload = function () {
+			  window.scrollTo(0, 0);
+			}
+
+        </script>
+	</head>
+	<body>
+		<div id='scroll_tracker'></div>
+		<div class='photo_container'>
+			<div class='sticky_container'>
+				<div class='vcentre_content_container'>
+					<p>
+						In this sketch, the black rectangle moves across the screen according to the user's vertical scroll. They can move forwards or backwards during this.
+					</p>
+					<svg >
+						<rect class='squaredance' x="10" y="10" width="30" height="30" stroke="green"/>
+					</svg>
+				</div>
+			</div>
+			<div class='spacer'></div>
+		</div>
+		<div class='photo_container'>
+			<div class='sticky_container'>
+				<div class='vcentre_content_container'>
+					<p>
+						In this panel, the animation only begins once the correct scroll height is reached.
+					</p>
+					<svg >
+						<circle class='circledance' cx="25" cy="75" r="20" stroke="red" fill="yellow" stroke-width="5"/>
+					</svg>
+				</div>
+			</div>
+			<div class='spacer'></div>
+		</div>
+		<div class='photo_container'>
+			<div class='sticky_container'>
+				<div class='vcentre_content_container'>
+					<p>
+						This needs to be contained in its own non-sticky div in order to push the sticky div above out of the way. A spacer at the end does nothing to push this offscreen.
+					</p>
+				</div>
+			</div>
+			<div class='spacer'></div>
+		</div>
+		
+	</body>
+</html>
+<!-- 
+SCROLL PROPERTY: https://css-tricks.com/books/greatest-css-tricks/scroll-animation/
+
+-->

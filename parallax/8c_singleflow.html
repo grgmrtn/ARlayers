@@ -1,0 +1,381 @@
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0">
+        <title>Parallax Test</title>
+        <script type="module"> 
+        	
+        	import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.js';
+
+
+        	function main() {
+        		//setup variables
+        		const canvasA = document.querySelector('#canvasA');
+        		const canvasB = document.querySelector('#canvasB');
+        		const canvasC = document.querySelector('#canvasC');
+        		const rendererA = new THREE.WebGLRenderer({canvas: canvasA, alpha: true});
+        		const rendererB = new THREE.WebGLRenderer({canvas: canvasB, alpha: true});
+        		const rendererC = new THREE.WebGLRenderer({canvas: canvasC, alpha: true});
+        		        		
+        		const fov = 40;
+        		const aspect = 6;
+        		const near = 0.1;
+        		const far = 100;
+        		
+        		const cameraA = new THREE.PerspectiveCamera(fov, aspect, near, far);
+        		cameraA.position.x = 3; //+x moves camera to the right
+				cameraA.position.y = 0.8; //+y moves camera above the horizon
+        		cameraA.position.z = -4; //set the camera back a bit to see a cube at the origin
+        		cameraA.lookAt(new THREE.Vector3(-4, 0.5, 12));
+
+        		const cameraB = new THREE.PerspectiveCamera(fov, aspect, near, far);
+        		cameraB.position.x = 3; //+x moves camera to the right
+				cameraB.position.y = 0.8; //+y moves camera above the horizon
+        		cameraB.position.z = -4; 
+        		cameraB.lookAt(new THREE.Vector3(-4, 0.5, 12));
+
+        		const cameraC = new THREE.PerspectiveCamera(fov, aspect, near, far);
+        		cameraC.position.x = 3; //+x moves camera to the right
+				cameraC.position.y = 0.8; //+y moves camera above the horizon
+        		cameraC.position.z = -4; 
+        		cameraC.lookAt(new THREE.Vector3(-4, 0.5, 12));
+
+        		const sceneA = new THREE.Scene();
+				const helperA = new THREE.CameraHelper( cameraA );
+        		sceneA.add(helperA);
+
+        		const sceneB = new THREE.Scene();
+				const helperB = new THREE.CameraHelper( cameraB );
+        		sceneB.add(helperB);
+
+        		const sceneC = new THREE.Scene();
+				const helperC = new THREE.CameraHelper( cameraC );
+        		sceneC.add(helperC);
+
+        		//box geometry variables
+        		const boxWidth = 1;
+        		const boxHeight = 1;
+        		const boxDepth = 1;
+        		const unitBoxGeo = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
+        		const bigBoxGeo = new THREE.BoxGeometry(8 * boxWidth, 4 * boxHeight, boxDepth);
+
+        		//define and add light
+        		{
+				    const color = 0xFFFFFF;
+				    const intensity = 10;
+
+				    const lightA = new THREE.DirectionalLight(color, intensity);
+				    lightA.position.set(-3, 2, -3);
+				    lightA.target.position.set(0, 2, 2);
+				    sceneA.add(lightA);
+
+				    const lightB = new THREE.DirectionalLight(color, intensity);
+				    lightB.position.set(-3, 2, -3);
+				    lightB.target.position.set(0, 2, 2);
+				    sceneB.add(lightB);
+
+				    const lightC = new THREE.DirectionalLight(color, intensity);
+				    lightC.position.set(-3, 2, -3);
+				    lightC.target.position.set(0, 2, 2);
+				    sceneC.add(lightC);
+				}
+
+				//constructor fn for new cube
+        		function makeCubeInstance(geometry, color, x, y, z, givenScene) {
+        			const material = new THREE.MeshPhongMaterial({color});
+ 					const cube = new THREE.Mesh(geometry, material);
+
+  					givenScene.add(cube);
+ 					
+ 					cube.position.x = x; //+x are constructed more left
+ 					cube.position.y = y; //+y are constructed above
+ 					cube.position.z = z; //+z are constructed deeper
+
+ 					return cube;
+        		}
+
+        		//cube instances
+        		const cubes = [
+        			makeCubeInstance(unitBoxGeo, "yellow", 	0, 0, 5, sceneA),
+        			makeCubeInstance(unitBoxGeo, "green", 	0, 0, 5, sceneB),
+        			makeCubeInstance(unitBoxGeo, "orange", 	1, 0, 5, sceneC)
+        		];
+
+        		//constructor fn for new line
+        		function makeLineInstance(color, x1, y1, z1, x2, y2, z2, givenScene) {
+        			
+        			const material = new THREE.LineBasicMaterial({color});
+	        		const points = [];
+					points.push( new THREE.Vector3( x1, y1, z1));
+					points.push( new THREE.Vector3( x2, y2, z2));
+					const lgeometry = new THREE.BufferGeometry().setFromPoints( points );
+					const line = new THREE.Line( lgeometry, material );
+					givenScene.add(line);
+					
+        		}
+
+        		//line constructor
+        		makeLineInstance("blue", 	-4, 0, 0, 	-4, 0, 100, 	sceneA);
+        		makeLineInstance("red", 	-4, 0, 0, 	-4, 0, 100, 	sceneB);
+        		makeLineInstance("green", 	-2, 0, 0, 	-2, 0, 100, 	sceneC);
+
+
+        		let scrollY = window.scrollY;
+        		window.addEventListener('scroll', () => {
+        			scrollY = 100 * window.pageYOffset / (document.body.scrollHeight - window.innerHeight);
+        		})
+        		
+        		function resizeRendererToDisplaySize(renderer) {
+					const canvas = renderer.domElement;
+					const width = canvas.clientWidth;
+					const height = canvas.clientHeight;
+					const needResize = canvas.width !== width || canvas.height !== height;
+					if (needResize) {
+					  rendererA.setSize(width, height, false);
+					  rendererB.setSize(width, height, false);
+					  rendererC.setSize(width, height, false);
+					}
+					return needResize;
+				}
+        		
+        		function render(time) {
+	        		time *= 0.001; //convert time to seconds
+
+	        		if (resizeRendererToDisplaySize(rendererA)) {
+	        			const canvasA = rendererA.domElement;
+	        			cameraA.aspect = canvasA.clientWidth / canvasA.clientHeight;
+	        			cameraA.updateProjectionMatrix();
+
+	        			const canvasB = rendererB.domElement;
+	        			cameraB.aspect = canvasB.clientWidth / canvasB.clientHeight;
+	        			cameraB.updateProjectionMatrix();
+
+	        			const canvasC = rendererC.domElement;
+	        			cameraC.aspect = canvasC.clientWidth / canvasC.clientHeight;
+	        			cameraC.updateProjectionMatrix();
+
+	        		}
+
+	        		cameraA.lookAt(new THREE.Vector3(-4, scrollY * 0.05, 12));
+	        		cameraB.lookAt(new THREE.Vector3(-4, (scrollY - 30) * 0.05, 12));
+	        		cameraC.lookAt(new THREE.Vector3(-4 + (scrollY - 60), 0.5, 12));
+
+	        		document.getElementById("camera_tracker").innerHTML = "P" + cameraA.position.x + " " + cameraA.position.y + " " + cameraA.position.z + "<br>R" + cameraA.rotation.x + " " + cameraA.rotation.y + " " + cameraA.rotation.z + "<br>FOV" + cameraA.fov + "  A" + cameraA.aspect;
+	        		document.getElementById("camera_tracker_d").innerHTML = "P" + cameraB.position.x + " " + cameraB.position.y + " " + cameraB.position.z + "<br>R" + cameraB.rotation.x + " " + cameraB.rotation.y + " " + cameraB.rotation.z + "<br>FOV" + cameraB.fov + "  A" + cameraB.aspect;
+
+	        		cubes.forEach((cube, ndx) => {
+	        			const speed = 1 + ndx * 0.1;
+	        			const rot = time * speed;
+
+	        			//cube.position.z += time * 0.001;
+
+	        		});
+	        		
+	        		rendererA.render(sceneA, cameraA);
+	        		rendererB.render(sceneB, cameraB);
+	        		rendererC.render(sceneC, cameraC);
+	        		requestAnimationFrame(render);
+
+	        	}
+	        	requestAnimationFrame(render);
+        	}
+
+
+        	main();
+
+        </script>
+        <style>
+        	body, html {
+        		/*necessary for some reason*/
+        		height: 100%;
+        		margin: 0;
+        	}
+
+        	svg {
+        		width: 75%;
+        	}
+
+        	.anim_canvas {
+        		z-index: 1000;
+        		background-color: transparent;
+        		width: 100%;
+        		height: 50%;
+        		left:  0;
+
+        		object-fit: contain;
+        		object-position: 100% 100%;
+
+        	}
+
+        	.photo_container {
+        		/*contains the image - seems that each sticky item needs its own one of these*/
+        		/*background-image: url("parallax_bg.jpg");*/
+        		
+        		background-attachment: fixed;
+        		background-position: center;
+        		background-repeat: no-repeat;
+        		background-size: cover;
+
+        		
+        	}
+
+        	.photo {
+				z-index: 0;
+        		width: 100%;
+        		height: 100%;
+        		object-fit: cover;
+        		object-position: 21% 48%;
+        		position: fixed;
+        	}
+
+        	.sticky_container {
+        		/*stick after top edge hits top property below; pushed away by next sticky item*/
+        		border: 2px solid yellow;
+        		position: -webkit-sticky;
+        		position: sticky;
+        		height: 95%; /*does not include padding, must not cause element to start below top: property*/
+        		top: 1%;
+        	}
+
+        	.vcentre_content_container {
+        		font-size: 36px;
+        		color: white;
+        		font-weight: bold;
+        		/*text-align: center;*/
+        		font-family: sans-serif;
+        		border: 2px solid red;
+        		
+        		/*These properties keep the content vertically centred no matter the view size.*/
+        		top: 50%;
+        		position: relative;
+        		transform: translateY(-50%);
+        	}
+
+        	.spacer {
+        		min-height: 300%;
+        	}
+
+        	.debug {
+        		position: fixed;
+        		left: 20;
+        		z-index: 1000;
+        		background-color: purple;
+        		color: white;
+        		width: 200px;
+        		height: 50px;
+        	}
+
+        	.squaredance {
+
+        		animation: slideover 1s linear infinite;
+        		animation-play-state: paused;
+        		animation-delay: calc( ((var(--scroll) - 0)/(10 - 0)) * -1s );
+        		/*(var(--scroll) - box_top_scroll_pct)/(box_bottom_scroll_pct - box_top_scroll_pct)
+        		duration at end of calc must match animation length * -1*/
+        		animation-iteration-count: 1;
+				animation-fill-mode: both;
+        	}
+
+        	.circledance {
+
+        		animation: slideover 1s linear infinite;
+        		animation-play-state: paused;
+        		animation-delay: calc( ((var(--scroll) - 41)/(51 - 41)) * -1s );
+        		/*(var(--scroll) - box_top_scroll_pct)/(box_bottom_scroll_pct - box_top_scroll_pct)
+        		duration at end of calc must match animation length * -1*/
+        		animation-iteration-count: 1;
+				animation-fill-mode: both;
+        	}
+
+        	@keyframes rotate {
+			  to {
+			    transform: rotate(360deg);
+			  }
+			}
+
+			@keyframes slideover {
+			  to {
+			    transform: translateX(95%);
+			  }
+			}
+        	
+			/*this is key bc it lets us prove that we can rescale the background to any size, and as long as left:  and top: below match the object-position: for the img background tag above, the origindot will remain in place. Now we can use this info to continuously update the THREE elements and ensure the perspective always works*/
+        	.origindot {
+        		left: 21%;
+        		top:  48%;
+        		position: fixed;
+        		z-index: 1001;
+        		width: 10px;
+        		height: 10px;
+        		background-color: red;
+        	}
+
+        </style>
+        <script type="text/javascript">
+        	//computes scroll distance down the page and provides it to CSS
+        	window.addEventListener('scroll', () => {
+        		var scrollAmt = 100 * window.pageYOffset / (document.body.scrollHeight - window.innerHeight);
+			  	document.body.style.setProperty('--scroll', scrollAmt);
+			  	document.getElementById("scroll_tracker").innerHTML = Math.round(scrollAmt) + "% down the page";
+
+			}, false);
+
+        	//keeps scroll right at top on refresh
+			window.onbeforeunload = function () {
+			  window.scrollTo(0, 0);
+			}
+
+        </script>
+	</head>
+	<body>
+		<div id='scroll_tracker' class='debug' style='top: 20'></div>
+		<div id='camera_tracker' class='debug' style='top: 60'></div>
+		<div id='camera_tracker_d' class='debug' style='top: 120'></div>
+		<div class='photo_container'>
+			<img class='photo' src="parallax_bg.jpg" />
+			<span class='origindot'></span>
+			</svg>
+			<div class='sticky_container'>
+				<div class='vcentre_content_container'>
+					<canvas class='anim_canvas' id='canvasA'>
+						
+					</canvas>
+				</div>
+			</div>
+			<div class='spacer'></div>
+		</div>
+		<div class='photo_container'>
+			<div class='sticky_container'>
+				<div class='vcentre_content_container'>
+					<p>
+						In this panel, the animation only begins once the correct scroll height is reached.
+					</p>
+					<canvas class='anim_canvas' id='canvasB'>
+						
+					</canvas>
+					<svg >
+						<circle class='circledance' cx="25" cy="75" r="20" stroke="red" fill="yellow" stroke-width="5"/>
+					</svg>
+				</div>
+			</div>
+			<div class='spacer'></div>
+		</div>
+		<div class='photo_container'>
+			<div class='sticky_container'>
+				<div class='vcentre_content_container'>
+					<p>
+						This needs to be contained in its own non-sticky div in order to push the sticky div above out of the way. A spacer at the end does nothing to push this offscreen.
+					</p>
+					<canvas class='anim_canvas' id='canvasC'>
+						
+					</canvas>
+				</div>
+			</div>
+			<div class='spacer'></div>
+		</div>
+		
+	</body>
+</html>
+<!-- 
+SCROLL PROPERTY: https://css-tricks.com/books/greatest-css-tricks/scroll-animation/
+THREE JS SCROLL: https://tympanus.net/codrops/2022/01/05/crafting-scroll-based-animations-in-three-js/
+-->

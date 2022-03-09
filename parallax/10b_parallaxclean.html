@@ -1,0 +1,498 @@
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0">
+        <title>Parallax Test</title>
+        <script type="module"> 
+        	
+        	import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.js';
+
+        	function main() {
+
+        		//global setups
+        		const fov = 40;
+        		const aspect = 6;
+        		const near = 0.1;
+        		const far = 100;
+
+        		const scenes = [];
+        		const cameras = [];
+        		//each element in the array below spawns a THREEjs renderer and ties it to canvasSelector element provided in the DOM.
+        		const canvases = [
+        			initCanvas({
+        				canvasSelector: "#canvasA",
+        				scrollTop: 0,
+        				scrollBottom: 25,
+        				cubes: [
+        					{
+        						id: "redCube",
+        						cubeColor: "red",
+        						positionX: -3,
+        						positionY: 0,
+        						positionZ: 5,
+        						multiplier: 0.12,
+        						w: 3,
+        						h: 2,
+        						d: 2
+        					},
+        					{
+        						id: "greenCube",
+        						cubeColor: "green",
+        						positionX: -2,
+        						positionY: 0,
+        						positionZ: 7,
+        						multiplier: -0.01
+        					}
+        				]
+        			}),
+        			initCanvas({
+        				canvasSelector: "#canvasB",
+        				scrollTop: 38,
+        				scrollBottom: 62,
+        				cubes: [
+        					{
+        						id: "blueCube",
+        						cubeColor: "blue",
+        						positionX: -2,
+        						positionY: 0,
+        						positionZ: 5,
+        						w: 2,
+        						h: 1.5,
+        						d: 4
+        					}
+        				]
+        			}),
+        			initCanvas({
+        				canvasSelector: "#canvasC",
+        				scrollTop: 70,
+        				scrollBottom: 100,
+        				cubes: [
+        					{
+        						id: "yellowCube",
+        						cubeColor: "yellow",
+        						positionX: -1,
+        						positionY: 0,
+        						positionZ: 3,
+        						w: 3,
+        						h: 2,
+        						d: 2
+        					},
+        					{
+        						id: "greenCube2",
+        						cubeColor: "green",
+        						positionX: -4,
+        						positionY: 0,
+        						positionZ: 3,
+        						w: 3,
+        						h: 2,
+        						d: 2
+        					}
+        				]
+        			})
+        		];
+        		
+
+        		canvases.forEach((renderer) => {
+        			requestAnimationFrame(render);
+        		})
+        		
+        		function initCanvas(options) {
+        			//renderer
+        			const canvas = document.querySelector(options.canvasSelector);
+        			const renderer = new THREE.WebGLRenderer({canvas, alpha: true});
+
+        			//camera
+        			const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+	        		camera.position.x = 0;
+					camera.position.y = 0.8;
+	        		camera.position.z = -4;
+
+	        		const lookAtX = -5.6;
+	        		const lookAtY = 0.7;
+	        		const lookAtZ = 12;
+	        		camera.lookAt(new THREE.Vector3(lookAtX, lookAtY, lookAtZ));
+	        		
+
+	        		//scene
+	        		const scene = new THREE.Scene();
+					const helper = new THREE.CameraHelper(camera);
+	        		scene.add(helper);
+
+	        		//lights
+	        		const color = 0xFFFFFF;
+				    const intensity = 10;
+
+				    const light = new THREE.DirectionalLight(color, intensity);
+				    light.position.set(-3, 2, -3);
+				    light.target.position.set(0, 2, 2);
+				    scene.add(light);
+
+				    options.cubes.forEach((element, index) => {
+				    	element.scrollTop = options.scrollTop;
+				    	element.scrollBottom = options.scrollBottom;
+
+				    	makeCubeInstance(element, scene);
+				    });
+				    //add LookAt cube to show where camera is pointed
+				    makeCubeInstance({
+	        			id: "lookAt" + options.scrollTop,
+						cubeColor: "white",
+						positionX: lookAtX,
+						positionY: lookAtY,
+						positionZ: lookAtZ,
+						multiplier: 0
+	        		}, scene);
+				    
+				    for (var i = -5; i < 5; i++) {
+				    	if (i == 0) {
+				    		var colour = "white";
+				    	} else {
+				    		var colour = "yellow";
+				    	}
+				    	makeLineInstance(colour, i, 0, 0, i, 0, 100, scene);
+				    }
+				    
+
+				    scenes.push(scene);
+
+				    return renderer;
+				    
+        		}
+
+        		function resizeRendererToDisplaySize(renderer) {
+					const canvas = renderer.domElement;
+					const width = canvas.clientWidth;
+					const height = canvas.clientHeight;
+					const needResize = canvas.width !== width || canvas.height !== height;
+					if (needResize) {
+					  //renderer.setSize(width, height, false);
+					}
+					return needResize;
+				}
+
+        		function render(time) {
+	        		time *= 0.001; //convert time to seconds
+
+	        		//test window resizing on one renderer
+	        		if (resizeRendererToDisplaySize(canvases[0])) {
+	        			canvases.forEach((renderer, index) => {
+	        				const canvas = renderer.domElement;
+							const width = canvas.clientWidth;
+							const height = canvas.clientHeight;
+		        			renderer.setSize(width, height, false);
+							
+							const camera = scenes[index].children[0].camera;
+		        			camera.aspect = width / height;
+	        				camera.updateProjectionMatrix();
+
+		        		});
+	        			  
+	        		}
+
+	        		canvases.forEach((renderer, index) => {
+	        			const camera = scenes[index].children[0].camera;
+	        			//camera.lookAt(new THREE.Vector3(-4, (scrollY * 0.01) * 0.05, 12));
+
+	        			//update moving primitives by scroll position
+	        			scenes[index].traverse(tickMovables);
+
+	        			//render and finish
+	        			renderer.render(scenes[index], camera);
+	        		});
+	        		requestAnimationFrame(render);
+	        	}
+
+	        	function tickMovables(obj, scrollTop, scrollBottom) {
+	        		if (obj.type == "Mesh") {
+	        			obj.position.z = ((scrollY * obj.multiplier) - obj.scrollTop);
+	        		}
+	        	}
+
+	        	function makeCubeInstance(options, givenScene) {
+	        		const color = options.cubeColor;
+	        		const width = typeof options.w === "undefined" || !options.w ? 1 : options.w;
+	        		const height = typeof options.h === "undefined" || !options.h ? 1 : options.h;
+	        		const depth = typeof options.d === "undefined" || !options.d ? 1 : options.d;
+
+        			const geometry = new THREE.BoxGeometry(width, height, depth);
+        			const material = new THREE.MeshPhongMaterial({color});
+ 					const cube = new THREE.Mesh(geometry, material);
+
+  					givenScene.add(cube);
+ 					
+ 					cube.position.x = options.positionX; //+x are constructed more left
+ 					cube.position.y = options.positionY; //+y are constructed above
+ 					cube.position.z = options.positionZ; //+z are constructed deeper
+ 					cube.initX = options.positionX;
+ 					cube.initY = options.positionY;
+ 					cube.initZ = options.positionZ;
+
+ 					cube.multiplier = typeof options.multiplier === "undefined" ? 0.01 : options.multiplier;
+ 					cube.name = options.id;
+ 					cube.scrollTop = options.scrollTop = typeof options.scrollTop === "undefined" || !options.scrollTop ? 0 : options.scrollTop;
+ 					cube.scrollBottom = options.scrollBottom = typeof options.scrollBottom === "undefined" || !options.scrollBottom ? 100 : options.scrollBottom;
+
+        		}
+
+        		function makeLineInstance(color, x1, y1, z1, x2, y2, z2, givenScene) {
+        			
+        			const material = new THREE.LineBasicMaterial({color});
+	        		
+	        		const points = [];
+					points.push( new THREE.Vector3( x1, y1, z1));
+					points.push( new THREE.Vector3( x2, y2, z2));
+					const lgeometry = new THREE.BufferGeometry().setFromPoints( points );
+
+					const line = new THREE.Line( lgeometry, material );
+					givenScene.add(line);
+					
+        		}
+        	}
+
+        	main();
+
+        </script>
+        <style>
+        	body, html {
+        		/*necessary for some reason*/
+        		height: 100%;
+        		margin: 0;
+        	
+        	}
+
+        	svg {
+        		width: 75%;
+        	}
+
+        	.anim_canvas {
+        		z-index: 1000;
+        		background-color: transparent;
+        		width: 100%;
+        		height: 100%;
+        		left:  0;
+
+        		object-fit: cover;
+        		object-position: 21% 48%;
+        	}
+
+        	.photo {
+				z-index: 0;
+        		width: 100%;
+        		height: 100%;
+        		object-fit: cover;
+        		object-position: 21% 48%;
+        		position: fixed;
+        	}
+
+        	.module_child {
+        		border: 2px solid yellow;
+        		height: 99%;
+        	}
+
+	        	.sticky_module_child {
+	        		position: -webkit-sticky;
+	        		position: sticky;
+	        		top: 1%;
+	        	}
+
+	        	.anim_canvas_container {
+	        		border: 2px solid red;
+	        		top: 50%;
+	        		position: relative;
+	        		transform: translateY(-50%);
+	        	}
+
+	        	.module_spacer {
+	        		min-height: 300%;
+	        	}
+
+        	.story_panel_container {
+        		border: 5px solid white;
+        	}
+
+	        	.story_panel {
+	        		background-color: white;
+	        		padding: 20px;
+	        		color: black;
+	        		margin-left: 10%;
+	        		width: 30%;
+	        	}
+
+	        	.sticky_story_panel {
+	        		position: -webkit-sticky;
+	        		position: sticky;
+	        		top: 15%;
+	        	}
+
+	        	.story_spacer {
+	        		height: 100%;
+	        	}
+
+        	
+
+        	
+
+        	.debug {
+        		position: fixed;
+        		left: 20;
+        		z-index: 1000;
+        		background-color: purple;
+        		color: white;
+        		width: 200px;
+        		height: 50px;
+        	}
+
+        	.circledance {
+
+        		animation: slideover 1s linear infinite;
+        		animation-play-state: paused;
+        		animation-delay: calc( ((var(--scroll) - 41)/(51 - 41)) * -1s );
+        		/*(var(--scroll) - box_top_scroll_pct)/(box_bottom_scroll_pct - box_top_scroll_pct)
+        		duration at end of calc must match animation length * -1*/
+        		animation-iteration-count: 1;
+				animation-fill-mode: both;
+        	}
+
+			@keyframes slideover {
+			  to {
+			    transform: translateX(95%);
+			  }
+			}
+        	
+			/*this is key bc it lets us prove that we can rescale the background to any size, and as long as left:  and top: below match the object-position: for the img background tag above, the origindot will remain in place. Now we can use this info to continuously update the THREE elements and ensure the perspective always works*/
+        	.origindot {
+        		left: 21%;
+        		top:  48%;
+        		position: fixed;
+        		z-index: 1001;
+        		width: 10px;
+        		height: 10px;
+        		background-color: red;
+        	}
+
+        </style>
+        <script type="text/javascript">
+        	//computes scroll distance down the page and provides it to CSS
+        	window.addEventListener('scroll', () => {
+        		var scrollAmt = 100 * window.pageYOffset / (document.body.scrollHeight - window.innerHeight);
+			  	document.body.style.setProperty('--scroll', scrollAmt);
+			  	document.getElementById("scroll_tracker").innerHTML = Math.round(scrollAmt) + "% down the page";
+
+			}, false);
+
+        	//keeps scroll right at top on refresh
+			window.onbeforeunload = function () {
+			  window.scrollTo(0, 0);
+			}
+
+        </script>
+	</head>
+	<!--
+		MODULE_CONTAINER
+			MODULE_CHILD (S)
+				ANIM_CANVAS - animation goes here
+			STORY_PANEL_CONTAINER - every SPC needs at least one STORY_PANEL and one SPACER
+			|	STORY_PANEL (S) - writing goes here
+			|	STORY_SPACER (gives the STORY_PANEL something to float over)
+			STORY_PANEL_CONTAINER
+			|	STORY_SPACER - add a spacer before STORY_PANELS to give the first one room to leave
+			|	STORY_PANEL (S)
+			|	STORY_SPACER (gives the STORY_PANEL something to float over)
+			MODULE_SPACER (makes sticky work, gives the MODULE_STICKY_CHILD something to float over)
+
+		MODULE_CONTAINER
+			MODULE_CHILD (S)
+			...
+	-->
+	<!--story_panel_container is an invisible element that stays in scrolling DOM. This essentially sets a scroll start and end for its children to be visible based on its position in the DOM. Use one of these around each story_panel. story_panel_container's height is determined by the sum of its children's heights, but only the 'article' child will appear to stick at the top of the screen-->
+	<!--each story_panel contains everything the user reads within a story-->
+	<!--stays stuck until sibling below is finished scrolling, next story_panel_container grabs this one-->
+	<!--Each story_spacer takes up the 'sacrifice scroll' that you want the user to do while the story panel stays on screen. Add one above for a lead-up and add one below for lingering.-->
+	<body>
+		<div id='scroll_tracker' class='debug' style='top: 20'></div>
+		<!--<div id='camera_tracker' class='debug' style='top: 60'></div>
+		<div id='camera_tracker_d' class='debug' style='top: 120'></div>-->
+			<img class='photo' src="parallax_bg.jpg" />
+			<span class='origindot'></span>
+			<div class='module_container' id='moduleA'>
+				<div class='module_child sticky_module_child'>	
+					<div class='anim_canvas_container'>
+						<canvas class='anim_canvas' id='canvasA'></canvas>
+					</div>
+				</div>
+				<div class='story_panel_container'>	
+					<div class='story_panel sticky_story_panel' id='story_panelA1'>
+						<h2 class=''>First module, first panel</h2>
+						<p class=''>Second text on first panel</p>
+					</div>	
+					<div class='story_spacer'></div>	
+				</div>
+				<div class='story_panel_container'>
+					<div class='story_spacer'></div>
+					<div class='story_panel sticky_story_panel' id='story_panelA2'>
+						<h2 class=''>First module, second panel</h2>
+						<p class=''>Second text on second panel</p>
+					</div>
+					<div class='story_spacer'></div>	
+				</div>
+				<div class='story_panel_container'>
+					<div class='story_spacer'></div>
+					<div class='story_panel sticky_story_panel' id='story_panelA3'>
+						<h2 class=''>First module, third panel</h2>
+						<p class=''>Second text on third panel</p>
+					</div>
+					<div class='story_spacer'></div>	
+				</div>
+				<div class='module_spacer'></div>
+			</div>
+			<div class='module_container'  id='moduleB'>
+				<div class='module_child sticky_module_child'>
+					<div class='anim_canvas_container'>
+						<canvas class='anim_canvas' id='canvasB'></canvas>
+					</div>
+				</div>
+				<div class='story_panel_container'>	
+					<div class='story_panel sticky_story_panel' id='story_panelB1'>
+						<h2 class=''>Second module, first panel</h2>
+						<p class=''>Second text on first panel</p>
+					</div>	
+					<div class='story_spacer'></div>	
+				</div>
+				<div class='story_panel_container'>
+					<div class='story_spacer'></div>
+					<div class='story_panel sticky_story_panel' id='story_panelB2'>
+						<h2 class=''>Second module, second panel</h2>
+						<p class=''>Second text on second panel</p>
+					</div>
+					<div class='story_spacer'></div>	
+				</div>
+				<div class='module_spacer'></div>
+			</div>
+			<div class='module_container'  id='moduleC'>
+				<div class='module_child sticky_module_child'>
+					<div class='anim_canvas_container'>
+						<canvas class='anim_canvas' id='canvasC'></canvas>
+					</div>
+				</div>
+				<div class='story_panel_container'>	
+					<div class='story_panel sticky_story_panel' id='story_panelC1'>
+						<h2 class=''>Third module, first panel</h2>
+						<p class=''>Second text on first panel</p>
+					</div>	
+					<div class='story_spacer'></div>	
+				</div>
+				<div class='story_panel_container'>
+					<div class='story_spacer'></div>
+					<div class='story_panel sticky_story_panel' id='story_panelC2'>
+						<h2 class=''>Third module, second panel</h2>
+						<p class=''>Second text on second panel</p>
+					</div>
+					<div class='story_spacer'></div>	
+				</div>
+				<div class='module_spacer'></div>
+			</div>
+	</body>
+</html>
+<!-- 
+SCROLL PROPERTY: https://css-tricks.com/books/greatest-css-tricks/scroll-animation/
+THREE JS SCROLL: https://tympanus.net/codrops/2022/01/05/crafting-scroll-based-animations-in-three-js/
+-->

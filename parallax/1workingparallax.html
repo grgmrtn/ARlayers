@@ -1,0 +1,80 @@
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0">
+        <title>Parallax Test</title>
+        <style>
+        	body, html {
+        		/*necessary for some reason*/
+        		height: 100%;
+        		margin: 0;
+        	}
+
+        	.parallax {
+        		/*contains the image - can't get it working without two of these, one for each sticky item*/
+        		background-image: url("parallax_bg.jpg");
+        		min-height: 100%;
+        		background-attachment: fixed;
+        		background-position: center;
+        		background-repeat: no-repeat;
+        		background-size: cover;
+        	}
+
+        	.shouldscroll {
+        		/*stick after top edge hits top property below; pushed away by next sticky item*/
+        		border: 2px solid yellow;
+        		position: -webkit-sticky;
+        		position: sticky;
+        		padding: 0% 0px;
+        		height: 95%; /*does not include padding*/
+        		top: 1%;
+        	}
+
+        	.scrolltext {
+        		font-size: 36px;
+        		color: white;
+        		font-weight: bold;
+        		text-align: center;
+        		font-family: sans-serif;
+        		
+        		/*These properties keep the content vertically centred no matter the view size.*/
+        		top: 50%;
+        		position: relative;
+        		transform: translateY(-50%);
+        	}
+
+        	.spacer {
+        		min-height: 1000px;
+        	}
+        	
+
+        </style>
+        <script type="text/javascript">
+
+        </script>
+	</head>
+	<body>
+
+		<div class='parallax'>
+			<div class='shouldscroll'>
+				<p class='scrolltext'>When my top padding pushes my top edge below the top: setting of .shouldscroll, I won't stick.</p>
+			</div>
+		</div>
+		<div class='parallax'>
+			<div class='shouldscroll'>
+				<p class='scrolltext'>I will stick once my top edge reaches the top: setting of .shouldscroll.</p>
+			</div>
+			<div class='spacer'></div>
+		</div>
+		<div class='parallax'>
+			<div class='shouldscroll'>
+				<p class='scrolltext'>This needs to be in its own non-sticky div in order to push the sticky div above out of the way.</p>
+			</div>
+			<div class='spacer'></div>
+		</div>
+		
+	</body>
+</html>
+<!-- 
+SCROLL PROPERTY: https://css-tricks.com/books/greatest-css-tricks/scroll-animation/
+
+-->

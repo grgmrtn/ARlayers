@@ -1,0 +1,119 @@
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0">
+        <title>Three.js Test</title>
+        <script type="module"> 
+        	
+        	import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.min.js';
+
+        	function main() {
+        		//setup variables
+        		const canvas = document.querySelector('#c');
+        		const renderer = new THREE.WebGLRenderer({canvas});
+        		const fov = 75;
+        		const aspect = 2;
+        		const near = 0.1;
+        		const far = 5;
+        		const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+        		camera.position.z = 2; //set the camera back a bit to see a cube at the origin
+
+        		const scene = new THREE.Scene();
+
+        		//box geometry variables
+        		const boxWidth = 1;
+        		const boxHeight = 1;
+        		const boxDepth = 1;
+        		const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
+
+        		//define and add light
+        		{
+				    const color = 0xFFFFFF;
+				    const intensity = 1;
+				    const light = new THREE.DirectionalLight(color, intensity);
+				    light.position.set(-1, 2, 4);
+				    scene.add(light);
+				}
+
+				//constructor fn for new cube
+        		function makeInstance(geometry, color, x) {
+        			const material = new THREE.MeshPhongMaterial({color});
+ 					
+ 					const cube = new THREE.Mesh(geometry, material);
+  					scene.add(cube);
+ 					
+ 					cube.position.x = x;
+ 					
+ 					return cube;
+        		}
+
+        		//3 cube instances
+        		const cubes = [
+        			makeInstance(geometry, 0x44aa88, 0),
+        			makeInstance(geometry, 0xaa8844, -2),
+        			makeInstance(geometry, 0xaa4488, 2)
+        		];
+
+        		function resizeRendererToDisplaySize(renderer) {
+					const canvas = renderer.domElement;
+					const width = canvas.clientWidth;
+					const height = canvas.clientHeight;
+					const needResize = canvas.width !== width || canvas.height !== height;
+					if (needResize) {
+					  renderer.setSize(width, height, false);
+					}
+					return needResize;
+				}
+        		
+        		function render(time) {
+	        		time *= 0.001; //convert time to seconds
+
+	        		if (resizeRendererToDisplaySize(renderer)) {
+	        			const canvas = renderer.domElement;
+	        			camera.aspect = canvas.clientWidth / canvas.clientHeight;
+	        			camera.updateProjectionMatrix();
+	        		}
+	        		
+	        		cubes.forEach((cube, ndx) => {
+	        			const speed = 1 + ndx * 0.1;
+	        			const rot = time * speed;
+	        			cube.rotation.x = rot;
+	        			cube.rotation.y = rot;
+	        		});
+	        		
+	        		renderer.render(scene, camera);
+	        		requestAnimationFrame(render);
+
+	        	}
+	        	requestAnimationFrame(render);
+        	}
+
+        	main();
+
+        </script>
+        <style>
+        	body, html {
+        		/*necessary for some reason*/
+        		height: 100%;
+        		margin: 0;
+        	}
+
+        	#c {
+        		z-index: 1000;
+        		width: 100%;
+        		height: 100%;
+        		display: block;
+        	}
+
+
+        </style>
+        <script type="text/javascript">
+
+
+        </script>
+	</head>
+	<body>
+		<canvas id='c'>
+			
+		</canvas>		
+	</body>
+</html>

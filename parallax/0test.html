@@ -1,0 +1,108 @@
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0">
+        <title>Parallax Test</title>
+        <style>
+        	body, html {
+        		height: 100%;
+        	}
+
+        	.movingcontainer {
+
+        		padding-top: 500px;
+        		padding-bottom: 500px;
+        	}
+
+        	.shouldscroll {
+        		
+        		
+        		/*background-color: grey;*/
+
+        		border: 2px solid yellow;
+        		
+        		position: -webkit-sticky;
+        		position: sticky;
+        		top: 10%;
+        	}
+
+        	.scrolltext {
+        		font-size: 36px;
+        		color: white;
+        		font-weight: bold;
+        		text-align: center;
+        		font-family: sans-serif;
+        		
+        	}
+
+        	.square {
+        		width: 5%;
+        		height: 5%;
+        		background-color: yellow;
+
+        		animation: rotate 1s linear infinite;
+        		animation-play-state: paused;
+        		animation-delay: calc(var(--scroll) * -1s);
+        		animation-iteration-count: 1;
+				animation-fill-mode: both;
+        	}
+
+        	@keyframes rotate {
+			  to {
+			    transform: rotate(360deg);
+			  }
+			}
+
+			.parallax {
+				background-color: transparent;
+				position: relative;
+			}
+        	
+        	.background {
+        		background-image: url("parallax_bg.jpg");
+        		min-height: 100%;
+        		background-attachment: fixed;
+        		background-position: center;
+        		background-repeat: no-repeat;
+        		background-size: cover;
+        	}
+
+        	.spacer {
+        		min-height: 2000px;
+        	}
+        	
+
+        </style>
+        <script type="text/javascript">
+        	window.addEventListener('scroll', () => {
+			  document.body.style.setProperty('--scroll', window.pageYOffset / (document.body.scrollHeight - window.innerHeight));
+			  console.log("pageYOffset: " + window.pageYOffset);
+			  console.log("document.body.offsetHeight: " + document.body.offsetHeight);
+			  console.log("document.body.scrollHeight: " + document.body.scrollHeight);
+			  console.log("window.innerHeight: " + window.innerHeight);
+
+			}, false);
+        </script>
+	</head>
+	<body>
+		<div class='background'></div>
+		<div class='parallax'>
+			<div class='movingcontainer'>
+				<div class='shouldscroll'>
+					<p class='scrolltext'>Test type 1!</p>
+					<div class='square'></div>
+				</div>
+			</div>
+		</div>
+		<div class='parallax'>
+			<div class='shouldscroll'>
+				<p class='scrolltext'>Test type 2!</p>
+			</div>
+			<div class='spacer'></div>
+		</div>
+		
+	</body>
+</html>
+<!-- 
+SCROLL PROPERTY: https://css-tricks.com/books/greatest-css-tricks/scroll-animation/
+
+-->

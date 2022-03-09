@@ -1,0 +1,269 @@
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0">
+        <title>Parallax Test</title>
+        <script type="module"> 
+        	
+        	import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.min.js';
+
+        	function main() {
+        		//setup variables
+        		const canvas = document.querySelector('#c');
+        		const renderer = new THREE.WebGLRenderer({canvas, alpha: true});
+        		const fov = 75;
+        		const aspect = 2;
+        		const near = 0.1;
+        		const far = 5;
+        		const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+        		
+		
+        		camera.position.z = 2; //set the camera back a bit to see a cube at the origin
+
+        		const scene = new THREE.Scene();
+				const helper = new THREE.CameraHelper( camera );
+        		scene.add( helper );
+
+        		//box geometry variables
+        		const boxWidth = 1;
+        		const boxHeight = 1;
+        		const boxDepth = 1;
+        		const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
+
+        		//define and add light
+        		{
+				    const color = 0xFFFFFF;
+				    const intensity = 1;
+				    const light = new THREE.DirectionalLight(color, intensity);
+				    light.position.set(-1, 2, 4);
+				    scene.add(light);
+				}
+
+				//constructor fn for new cube
+        		function makeInstance(geometry, color, x) {
+        			const material = new THREE.MeshPhongMaterial({color});
+ 					
+ 					const cube = new THREE.Mesh(geometry, material);
+  					scene.add(cube);
+ 					
+ 					cube.position.x = x;
+ 					
+ 					return cube;
+        		}
+
+        		//3 cube instances
+        		const cubes = [
+        			makeInstance(geometry, 0x44aa88, 0),
+        			makeInstance(geometry, 0xaa8844, -2),
+        			makeInstance(geometry, 0xaa4488, 2)
+        		];
+
+        		let scrollY = window.scrollY;
+        		//NEW: try to grab scroll and use it here
+        		window.addEventListener('scroll', () => {
+        			scrollY = 100 * window.pageYOffset / (document.body.scrollHeight - window.innerHeight);
+        			//console.log(scrollY);
+        		})
+        		
+
+
+        		function resizeRendererToDisplaySize(renderer) {
+					const canvas = renderer.domElement;
+					const width = canvas.clientWidth;
+					const height = canvas.clientHeight;
+					const needResize = canvas.width !== width || canvas.height !== height;
+					if (needResize) {
+					  renderer.setSize(width, height, false);
+					}
+					return needResize;
+				}
+        		
+        		function render(time) {
+	        		time *= 0.001; //convert time to seconds
+
+	        		if (resizeRendererToDisplaySize(renderer)) {
+	        			const canvas = renderer.domElement;
+	        			camera.aspect = canvas.clientWidth / canvas.clientHeight;
+	        			camera.updateProjectionMatrix();
+	        		}
+	        		
+	        		cubes.forEach((cube, ndx) => {
+	        			const speed = 1 + ndx * 0.1;
+	        			const rot = time * speed;
+	        			cube.rotation.x = scrollY;
+	        			cube.rotation.y = scrollY;
+	        			//cube.position.z -= (Math.random() * 2) - 1 ;
+	        		});
+	        		
+	        		renderer.render(scene, camera);
+	        		requestAnimationFrame(render);
+
+	        	}
+	        	requestAnimationFrame(render);
+        	}
+
+        	main();
+
+        </script>
+        <style>
+        	body, html {
+        		/*necessary for some reason*/
+        		height: 100%;
+        		margin: 0;
+        	}
+
+        	svg {
+        		width: 75%;
+        	}
+
+        	#c {
+        		z-index: 1000;
+        		background-color: transparent;
+        		width: 50%;
+        		height: 20%;
+        	}
+
+        	.photo_container {
+        		/*contains the image - seems that each sticky item needs its own one of these*/
+        		background-image: url("parallax_bg.jpg");
+        		min-height: 100%;
+        		background-attachment: fixed;
+        		background-position: center;
+        		background-repeat: no-repeat;
+        		background-size: cover;
+        	}
+
+        	.sticky_container {
+        		/*stick after top edge hits top property below; pushed away by next sticky item*/
+        		border: 2px solid yellow;
+        		position: -webkit-sticky;
+        		position: sticky;
+        		height: 95%; /*does not include padding, must not cause element to start below top: property*/
+        		top: 1%;
+        	}
+
+        	.vcentre_content_container {
+        		font-size: 36px;
+        		color: white;
+        		font-weight: bold;
+        		text-align: center;
+        		font-family: sans-serif;
+        		border: 2px solid red;
+        		
+        		/*These properties keep the content vertically centred no matter the view size.*/
+        		top: 50%;
+        		position: relative;
+        		transform: translateY(-50%);
+        	}
+
+        	.spacer {
+        		min-height: 100%;
+        	}
+
+        	#scroll_tracker {
+        		position: fixed;
+        		top: 20;
+        		left: 20;
+        		z-index: 1000;
+        		background-color: purple;
+        		color: white;
+        		width: 200px;
+        		height: 50px;
+        	}
+
+        	.squaredance {
+
+        		animation: slideover 1s linear infinite;
+        		animation-play-state: paused;
+        		animation-delay: calc( ((var(--scroll) - 0)/(10 - 0)) * -1s );
+        		/*(var(--scroll) - box_top_scroll_pct)/(box_bottom_scroll_pct - box_top_scroll_pct)
+        		duration at end of calc must match animation length * -1*/
+        		animation-iteration-count: 1;
+				animation-fill-mode: both;
+        	}
+
+        	.circledance {
+
+        		animation: slideover 1s linear infinite;
+        		animation-play-state: paused;
+        		animation-delay: calc( ((var(--scroll) - 41)/(51 - 41)) * -1s );
+        		/*(var(--scroll) - box_top_scroll_pct)/(box_bottom_scroll_pct - box_top_scroll_pct)
+        		duration at end of calc must match animation length * -1*/
+        		animation-iteration-count: 1;
+				animation-fill-mode: both;
+        	}
+
+        	@keyframes rotate {
+			  to {
+			    transform: rotate(360deg);
+			  }
+			}
+
+			@keyframes slideover {
+			  to {
+			    transform: translateX(95%);
+			  }
+			}
+        	
+
+        </style>
+        <script type="text/javascript">
+        	//computes scroll distance down the page and provides it to CSS
+        	window.addEventListener('scroll', () => {
+        		var scrollAmt = 100 * window.pageYOffset / (document.body.scrollHeight - window.innerHeight);
+			  	document.body.style.setProperty('--scroll', scrollAmt);
+			  	document.getElementById("scroll_tracker").innerHTML = Math.round(scrollAmt) + "% down the page";
+
+			}, false);
+
+        	//keeps scroll right at top on refresh
+			window.onbeforeunload = function () {
+			  window.scrollTo(0, 0);
+			}
+
+        </script>
+	</head>
+	<body>
+		<div id='scroll_tracker'></div>
+		<div class='photo_container'>
+			<div class='sticky_container'>
+				<div class='vcentre_content_container'>
+					<p>
+						In this sketch, some THREE.js cubes rotate and move away from the camera according to scroll position.
+					</p>
+					<canvas id='c'>
+						
+					</canvas>
+				</div>
+			</div>
+			<div class='spacer'></div>
+		</div>
+		<div class='photo_container'>
+			<div class='sticky_container'>
+				<div class='vcentre_content_container'>
+					<p>
+						In this panel, the animation only begins once the correct scroll height is reached.
+					</p>
+					<svg >
+						<circle class='circledance' cx="25" cy="75" r="20" stroke="red" fill="yellow" stroke-width="5"/>
+					</svg>
+				</div>
+			</div>
+			<div class='spacer'></div>
+		</div>
+		<div class='photo_container'>
+			<div class='sticky_container'>
+				<div class='vcentre_content_container'>
+					<p>
+						This needs to be contained in its own non-sticky div in order to push the sticky div above out of the way. A spacer at the end does nothing to push this offscreen.
+					</p>
+				</div>
+			</div>
+			<div class='spacer'></div>
+		</div>
+		
+	</body>
+</html>
+<!-- 
+SCROLL PROPERTY: https://css-tricks.com/books/greatest-css-tricks/scroll-animation/
+THREE JS SCROLL: https://tympanus.net/codrops/2022/01/05/crafting-scroll-based-animations-in-three-js/
+-->
