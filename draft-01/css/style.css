@@ -1,0 +1,277 @@
+
+:root {
+    --hilite: #c1e63e;
+    --f-display: ivypresto-text, sans-serif;
+    --f-text: acumin-pro, sans-serif;
+    --arrows:  din-2014, sans-serif;
+}
+
+
+* {
+    padding:0;
+    margin:0;
+    box-sizing: border-box;
+
+}
+
+body, html {
+    /*necessary for some reason*/
+    height: 100%;
+    margin: 0;
+
+}
+
+.wide {
+    background-color: green;
+    height: auto;
+    width: 100%;
+}
+
+.tall {
+    background-color: blue;
+    width: auto;
+    height: 100%;
+}
+
+.inside {
+    width: 100%;
+    height: 100%;
+    left:  0;
+}
+
+
+
+.markerline {
+    position: fixed;
+    left: 100px;
+    /*border-left: 3px solid white;*/
+    height: 100%;
+    width: 1%;
+    z-index: 6;
+}
+
+svg {
+    width: 75%;
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: var(--f-display);
+    font-weight: 500;
+    font-style: normal;
+    margin-top: 0;
+}
+
+
+
+p {
+    font-family: var(--f-text);
+    font-weight: 200;
+    font-style: normal;
+}
+
+.intro_page {
+    color: white;
+    text-shadow: 2px 2px #222;
+    background-color: rgba(20,20,20,0.2);
+    
+}
+
+.page_header {
+    font-size: 72px;
+    margin: 20px 40px 0px 40px;
+}
+
+.page_subheader {
+    font-size: 27px;
+    margin: 0 40% 20px 40px;
+}
+
+.anim_canvas {
+    z-index: 4;
+    background-color: transparent;
+    
+/* 
+    object-fit: cover;
+    object-position: 21% 48%; */
+    position:  fixed;
+}
+
+.photo {
+    z-index: 0;
+    width: 100vw;
+    height: 100%;
+    top: 0;
+    left: 0;
+    /*object-fit: cover;
+    object-position: 50% 50%;*/
+    position: fixed;
+    background-image: url("../img/itx_bg.png");
+    background-size: cover;
+}
+
+.module_child {
+    /*border: 2px solid yellow;*/
+    height: 99%;
+}
+
+    .sticky_module_child {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 1%;
+    }
+
+    .anim_canvas_container {
+        /*border: 2px solid red;*/
+        /* top: 50%; */
+        position: relative; 
+        
+        transform: translateY(-50%);
+    
+    }
+
+    .module_spacer {
+        min-height: 100%;
+    }
+
+.story_panel_container {
+    
+}
+
+    .story_panel {
+        /*background-color: white;*/
+        padding: 20px;
+        color: white;
+        margin-left: 10%;
+    }
+
+    .story_card {
+        width: 40%;
+        background-color: rgba(20,20,20,0.8);
+        padding: 24px 24px 24px 40px;
+    }
+
+    .story_card_header {
+        font-size: 32px;
+        margin: 0 0 20px 0;
+    }
+
+    .story_card_copy {
+        color: white;
+        text-shadow: 0.5px 0.5px #222;
+        font-size: 20px;
+        margin: 0 0 20px 0;
+    }
+
+    .highlight {
+        color: var(--hilite);
+    }
+
+    .story_full_width {
+        width: 60%;
+    }
+
+    .sticky_story_panel {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 15%;
+    }
+
+    .story_spacer {
+        height: 100%;
+
+    }
+
+    .spacer_12 {
+        min-height: 100%;
+        height: 100%;
+    }
+
+    .spacer_9 {
+        min-height: 75%;
+        height: 75%;
+    }
+
+    .spacer_6 {
+        min-height: 50%;
+        height: 50%;
+    }
+
+    .spacer_4 {
+        min-height: 33.33%;
+        height: 33.33%;
+    }
+
+    
+
+    #story_panelI1 {
+        /*background: linear-gradient(rgba(20,20,20,0.8) 98%, var(--hilite));*/
+        background-color: rgba(20,20,20,0.8);
+        /*border-bottom: 5px solid var(--hilite);/*linear-gradient(rgba(20,20,20,0.8) 80%, var(--hilite));*/
+        height:  80%;
+        width: 100%;
+        z-index: 10;
+        top: 0;
+        margin-left: 0;
+
+    }
+
+
+
+.debug {
+    position: fixed;
+    left: 20;
+    z-index: 1000;
+    background-color: white;
+    color: blue;
+    width: 200px;
+    height: 50px;
+
+}
+
+.down_arrow {
+    font-family: var(--arrows);
+    font-size: 72px;
+}
+
+.autoplay {
+    position: fixed;
+    bottom: 5%;
+    left:  5%;
+    background-color: black;
+    color: white;
+    padding: 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    z-index: 5;
+}
+
+.autoplay-hidden {
+    display: none;
+}
+
+/*this is key bc it lets us prove that we can rescale the background to any size, and as long as left:  and top: below match the object-position: for the img background tag above, the origindot will remain in place. Now we can use this info to continuously update the THREE elements and ensure the perspective always works*/
+.origindot {
+    left: 21%;
+    top:  48%;
+    position: fixed;
+    z-index: 1001;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+}
+
+.call_to_action {
+    animation: bounce 1s ease-in-out infinite;
+    animation-fill-mode: both;
+    color: var(--hilite);
+    font-weight: 500;
+}
+
+@keyframes bounce {
+  0%, 100% {
+      transform: translateY(0%);
+  }
+  50% {
+    transform: translateY(13%);
+  }
+}
