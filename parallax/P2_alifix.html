@@ -4,6 +4,7 @@
         <title>Intersection Negotiation</title>
         <link rel="stylesheet" href="https://use.typekit.net/rva5buu.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/16.3.5/Tween.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
         <script type="module"> 
 
         	import * as THREE from 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.module.js';
@@ -3338,8 +3339,8 @@
 
 	        		//scene
 	        		const scene = new THREE.Scene();
-					//const helper = new THREE.CameraHelper(camera);
-	        		//scene.add(helper); //adds reticle and bounding box
+					const helper = new THREE.CameraHelper(camera);
+	        		scene.add(helper); //adds reticle and bounding box
 
 	        		//lights
 	        		const color = 0xFFF3E0;
@@ -3432,13 +3433,53 @@
 
         		function resizeRendererToDisplaySize(renderer) {
 					const canvas = renderer.domElement;
-					const width = canvas.clientWidth;
-					const height = canvas.clientHeight;
-					const needResize = canvas.width !== width || canvas.height !== height;
+					const rendererWidth = canvas.clientWidth;
+					const rendererHeight = canvas.clientHeight;
+
+					var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+					var viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+					var viewportAspect = viewportWidth / viewportHeight;
+
+					var imgBaseWidth = document.getElementById('bg').naturalWidth;
+					var imgBaseHeight = document.getElementById('bg').naturalHeight;
+					var imgAspect = imgBaseWidth / imgBaseHeight;
+
+					const needResize = viewportWidth !== rendererWidth || viewportHeight !== rendererHeight;
 					if (needResize) {
-					  //renderer.setSize(width, height, false);
+						sizeOverlay(imgAspect);
+						/*if (viewportWidth < imgBaseWidth && viewportHeight < imgBaseHeight) {
+							//image fits within viewport entirely; canvas should render 100/100
+							document.getElementById('canvasA').style.width = '100%';
+							document.getElementById('canvasA').style.height = '100%';
+							document.getElementById("camera_tracker").innerHTML = "img asp " + imgAspect.toFixed(2) + ", view asp " + viewportAspect.toFixed(2) + "<br>canvas width 100%, height 100%";
+
+						} else if (imgAspect < viewportAspect) {
+							document.getElementById('canvasA').style.width = viewportWidth;
+							document.getElementById('canvasA').style.height = 'auto';
+							document.getElementById("camera_tracker").innerHTML = "img asp " + imgAspect.toFixed(2) + ", view asp " + viewportAspect.toFixed(2) + "<br>canvas width " + viewportWidth + ", height auto";
+						} else {
+							document.getElementById('canvasA').style.width = 'auto';
+							document.getElementById('canvasA').style.height = viewportHeight;
+							document.getElementById("camera_tracker").innerHTML = "img asp " + imgAspect.toFixed(2) + ", view asp " + viewportAspect.toFixed(2) + "<br>canvas width auto, height " + viewportHeight + "";
+						}*/
+					  	//renderer.setSize(width, height, false);
 					}
 					return needResize;
+				}
+
+				function sizeOverlay(imgAspect) {
+
+					if ($(window).height() < $(window).width()*0.58) {
+						$('#canvasA').css({
+							'width':$(window).width(),
+							'height':'auto'
+						})
+					} else {
+						$('#canvasA').css({
+							'height':$(window).height(),
+							'width':$(window).width()
+						})
+					}
 				}
 
         		function render(time) {
@@ -3453,12 +3494,22 @@
 							const height = canvas.clientHeight;
 							const img = document.getElementById("bg");
 
-							if (width > img.width) {
+							/*if (width > img.naturalWidth) {
 								//viewport wider than image, so height will start to scale
+								canvas.classList.add("wide");
+								canvas.classList.remove("tall");
+								canvas.classList.remove("inside");
 
-							} else if (height > img.height) {
+							} else if (height > img.naturalHeight) {
 								//viewport taller than image, so width will start to scale
-		        			}
+								canvas.classList.add("tall");
+								canvas.classList.remove("wide");
+								canvas.classList.remove("inside");
+		        			} else {
+		        				canvas.classList.add("inside");
+		        				canvas.classList.remove("tall");
+		        				canvas.classList.remove("wide");
+		        			}*/
 
 							renderer.setSize(width, height, false);
 							
@@ -4055,6 +4106,24 @@
         	
         	}
 
+        	.wide {
+        		background-color: green;
+        		height: auto;
+        		width: 100%;
+        	}
+
+        	.tall {
+        		background-color: blue;
+        		width: auto;
+        		height: 100%;
+        	}
+
+        	.inside {
+        		width: 100%;
+        		height: 100%;
+        		left:  0;
+        	}
+
 
 
         	.markerline {
@@ -4105,21 +4174,24 @@
         	.anim_canvas {
         		z-index: 4;
         		background-color: transparent;
-        		width: 100%;
-        		height: 100%;
-        		left:  0;
+        		
 
         		object-fit: cover;
         		object-position: 21% 48%;
+        		position:  fixed;
         	}
 
         	.photo {
 				z-index: 0;
-        		width: 100%;
+        		width: 100vw;
         		height: 100%;
-        		object-fit: cover;
-        		object-position: 50% 50%;
+        		top: 0;
+        		left: 0;
+        		/*object-fit: cover;
+        		object-position: 50% 50%;*/
         		position: fixed;
+        		background-image: url("itx_bg.png");
+        		background-size: cover;
         	}
 
         	.module_child {
@@ -4322,6 +4394,8 @@
 				}
 			}
 
+
+
 			
 
         </script>
@@ -4367,9 +4441,9 @@
 
 	<body>
 		<div id='scroll_tracker' class='debug' style='top: 20'></div>
-		<!--<div id='camera_tracker' class='debug' style='top: 60'></div>
-		<div id='camera_tracker_d' class='debug' style='top: 120'></div>-->
-		<img class='photo' id='bg' src="itx_bg.png" />
+		<div id='camera_tracker' class='debug' style='top: 60'></div>
+		<!--<div id='camera_tracker_d' class='debug' style='top: 120'></div>-->
+		<div class='photo' id='bg'></div>
 		<a id='playbutton' class='autoplay' onclick='autoplay("play")'>Play</a>
 		<a id='pausebutton' class='autoplay autoplay-hidden' onclick='autoplay("pause")'>Pause</a>
 		<!--<div class='markerline'></div>
@@ -4390,7 +4464,7 @@
 		<div class='module_container' id='moduleA'>
 			<div class='module_child sticky_module_child'>	
 				<div class='anim_canvas_container'>
-					<canvas class='anim_canvas' id='canvasA'></canvas>
+					<canvas class='anim_canvas inside' id='canvasA'></canvas>
 				</div>
 			</div>
 			<div class='story_panel_container'>	
