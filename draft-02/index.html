@@ -1,0 +1,73 @@
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0">
+        <title>Intersection Negotiation</title>
+        <link rel="stylesheet" href="https://use.typekit.net/rva5buu.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/16.3.5/Tween.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+        <script type="module" src="js/script.js"></script>
+       
+		<style>
+			canvas {
+				
+				position:fixed;
+				z-index:999999;
+				left:0;
+				top:0;
+				opacity:0.5;
+				border:1px solid #000;
+			}
+			</style>
+
+        <script type="text/javascript">
+        	//computes scroll distance down the page and provides it to CSS
+        	window.addEventListener('scroll', () => {
+        		var scrollAmt = 100 * window.pageYOffset / (document.body.scrollHeight - window.innerHeight);
+			  	document.body.style.setProperty('--scroll', scrollAmt);
+			  	document.getElementById("scroll_tracker").innerHTML = Math.round(scrollAmt) + "%";
+
+			}, false);
+
+        	//keeps scroll right at top on refresh
+			window.onbeforeunload = function () {
+			  window.scrollTo(0, 0);
+			}
+
+			let scrollerID;
+
+			function autoplay(cmd) {
+				let currentScroll = document.body.scrollTop;
+				if (cmd == "play") {
+					scrollerID = setInterval(function() {
+						document.body.scrollTop += 1;
+						console.log(document.body.scrollTop);
+					}, 10);
+					document.getElementById('playbutton').classList.add('autoplay-hidden');
+					document.getElementById('pausebutton').classList.remove('autoplay-hidden');
+				}
+				else if (cmd == "pause") {
+					clearInterval(scrollerID);
+					document.getElementById('pausebutton').classList.add('autoplay-hidden');
+					document.getElementById('playbutton').classList.remove('autoplay-hidden');
+				}
+			}
+
+
+
+			
+
+        </script>
+
+		<link rel="stylesheet" href="css/style.css">
+	</head>
+	
+	<body>
+
+		<div class='photo' id='bg'></div>
+
+	</body>
+</html>
+<!-- 
+SCROLL PROPERTY: https://css-tricks.com/books/greatest-css-tricks/scroll-animation/
+THREE JS SCROLL: https://tympanus.net/codrops/2022/01/05/crafting-scroll-based-animations-in-three-js/
+-->
