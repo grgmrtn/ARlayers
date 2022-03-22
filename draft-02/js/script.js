@@ -31,6 +31,8 @@ let renderer;
 				renderer.render( scene, camera );
 			};
 
+			sizeOverlay();
+
 			animate();
 
 
@@ -42,52 +44,38 @@ let renderer;
 
 			function sizeOverlay() {
 
+				
 
-				const imgWidth = 1891;
+
+				const imgWidth = 1891; // THESE ARE THE DIMENSIONS OF THE BACKGROUND IMAGE
 				const imgHeight	=	1098;
-				const imgRatio = (imgHeight / imgWidth)  
+				const imgRatio = (imgHeight / imgWidth)  //WE USE THIS RATIO TO DETERMINE IF THE SCREEN IS WIDER OR NARROWER THAN THE IMAGE DIMENSIONS
 				
-				const containerRatio = ($(window).height() / $(window).width())     // container ratio
-
-				let finalWidth, finalHeight;
-				 if (containerRatio < imgRatio)	{
-
-
-					const containerWidth = $(window).width();
-					const containerHeight = $(window).width()*imgRatio;
+				const windowRatio = ($(window).height() / $(window).width())     // container ratio
 				
+				 if (windowRatio < imgRatio)	{
 
-
-					 finalHeight = containerHeight
-					 finalWidth = (containerHeight / imgRatio)
-					
-					renderer.setSize(containerWidth,containerHeight,false)
+					const canvasWidth = $(window).width(); //THESE FIGURE OUT THE SIZE THE CANVAS NEEDS TO BE
+				
+					renderer.setSize(canvasWidth,canvasHeight,false) //RE-RENDER THE SCENE
 
 					$("canvas").css({
-						"width":containerWidth,
-						"height":containerHeight,
-						"top":($(window).height()-containerHeight)/2
+						"width":canvasWidth, //THESE OVERCOME THE INLINE STYLE APPLIED TO THE CANVAS
+						"height":canvasHeight,
+						"top":($(window).height()-canvasHeight)/2  //THIS MOVES THE CANVAS SO THAT IT IS LARGER THAN THE CROP OF THE WINDOW
 					})
 				
-
-					
 				}  else  {
 
-				
-					const containerWidth = $(window).height()/imgRatio;
-					const containerHeight = $(window).height();
-				
-
-
-					 finalHeight = containerHeight
-					 finalWidth = (containerHeight / imgRatio)
+					const canvasWidth = $(window).height()/imgRatio;
+					const canvasHeight = $(window).height();
 					
-					renderer.setSize(containerWidth,containerHeight,false)
+					renderer.setSize(canvasWidth,canvasHeight,false)
 
 					$("canvas").css({
-						"width":containerWidth,
-						"height":containerHeight,
-						"left":($(window).width()-containerWidth)/2
+						"width":canvasWidth,
+						"height":canvasHeight,
+						"left":($(window).width()-canvasWidth)/2
 					})
 
 
