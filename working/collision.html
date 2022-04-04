@@ -92,7 +92,7 @@
             <a-box id='home_cube' 
                 src='#whitebear_texture' 
                 position='0 0.5 0' 
-                opacity='0.8' 
+                opacity='0.1' 
                 rotation='20 0 20' 
                 animation='property: rotation; to: 20 360 20; loop: true; dur: 3000'>      
             </a-box>
@@ -117,7 +117,7 @@
 
              <a-box id='car3' 
                 position='-50 -40 10' 
-                rotation='0 0 90'
+                rotation='0 0 -90'
                 opacity='0.6' 
                 width='8' 
                 height='14'
@@ -168,7 +168,7 @@
             <!--ROAD-->
             <a-box id='road_plane' 
                 color='#eee'
-                position='-40 -40 13' 
+                position='-40 -40 14' 
                 rotation='-90 0 0'
                 width='100' 
                 depth='100'
@@ -199,13 +199,20 @@
                     height='1' 
                 >
                 </a-box>
+                <a-box id='curb_box_NW' 
+                    color='grey' 
+                    position='10 10 0' 
+                    width='20' 
+                    depth='20'
+                    height='1'
+                ></a-box>
             </a-cylinder>
             
             
 
             <a-cylinder id='curb_NE'
                 color='grey' 
-                position='-60 0 12' 
+                position='-65 0 12' 
                 rotation='90 0 0' 
                 radius='10' 
                 height='1'
@@ -226,13 +233,20 @@
                     height='1' 
                 >
                 </a-box>    
+                <a-box id='curb_box_NE' 
+                    color='grey' 
+                    position='-10 10 0' 
+                    width='20' 
+                    depth='20'
+                    height='1'
+                ></a-box>
             </a-cylinder>
             
               
            
             <a-cylinder id='curb_SW'
                 color='grey' 
-                position='-10 -60 12' 
+                position='-10 -65 12' 
                 rotation='90 0 0' 
                 radius='10' 
                 height='1'
@@ -262,7 +276,7 @@
             
             <a-cylinder id='curb_SE'
                 color='grey' 
-                position='-60 -60 12' 
+                position='-65 -65 12' 
                 rotation='90 0 0' 
                 radius='10' 
                 height='1'
@@ -283,6 +297,13 @@
                     height='1' 
                 >
                 </a-box> 
+                <a-box id='curb_box_SE' 
+                    color='grey' 
+                    position='-10 0 -10' 
+                    width='20' 
+                    depth='20'
+                    height='1'
+                ></a-box>
             </a-cylinder>
             
 
